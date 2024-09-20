@@ -9,7 +9,7 @@ import Banner from "../../components/banner/Banner";
 
 const Cart = () => {
   const { cartArray, removeFromCart } = Store();
-  const [cart, setCart] = React.useState(cartArray);
+  const [cart, setCart] = useState(cartArray);
 
   const handleDecrementQuantity = (itemId) => {
     setCart((prevCart) =>

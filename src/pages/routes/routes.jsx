@@ -4,7 +4,6 @@ import ProductList from "../product-list/ProductList";
 import Footer from "../../components/footer/Footer";
 import AdminPage from "../admin/AdminPage";
 import DashboardTab from "../admin/Tabs/DashboardTab";
-import Cart from "../cart/Cart";
 import Login from "../auth/LoginPage";
 import Register from "../auth/RegisterPage";
 import CustomersTab from "../admin/Tabs/CustomersTab";
@@ -16,6 +15,7 @@ import Orders from "../account/Tabs/Orders";
 // import LogoutPage from "../auth/LogoutPage";
 import ProtectedRoute from "./ProtectedRoute";
 import { useState, useEffect } from "react";
+import Cart from "../cart/Cart";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
