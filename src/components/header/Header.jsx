@@ -12,6 +12,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { LuPackage2 } from "react-icons/lu";
 import { GiClothes } from "react-icons/gi";
 import { PiBuildingApartmentLight } from "react-icons/pi";
+import logo from '../../assets/logo.jpeg'
 
 const Header = () => {
   const [nav, setNav] = useState(false);
@@ -45,7 +46,7 @@ const Header = () => {
         <div className="items-center h-20 hidden px-8 py-4 text-white bg-black lg:flex">
           <Link to="/" className="flex items-center">
             <div className="lg:w-14 rounded-full">
-              <img className="" alt="blip logo" src={"bplip2.jpeg"} />
+              <img className="" alt="blip logo" src={logo} />
             </div>
             <h1>
               {/* <span className="text-2xl ml-1 roboto-thin font-bold text-red-500"> */}
@@ -153,13 +154,13 @@ const Header = () => {
           </div>
           <Link to="/" className="flex items-center text-xl font-bold ">
             <div className="w-11 mx-1 rounded-full">
-              <img alt="Tailwind CSS Navbar component" src="/bplip2.jpeg" />
+              <img alt="#" src={logo} />
             </div>
             <h1 className="text-red-500 rubik-text">Blip Trading</h1>
           </Link>
           <ul
             onClick={() => setNav(!nav)}
-            className={`absolute details top-[63px] transition-all duration-150  z-20 bg-black items-center  left-0 py-5 h-0 ${
+            className={`absolute details top-[70px] transition-all duration-150  z-20 bg-black items-center  left-0 py-5 h-0 ${
               nav ? "h-72 max-h-72 overflow-y-auto w-9/12" : "h-0 w-0"
             }`}
           >
