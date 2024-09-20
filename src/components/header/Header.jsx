@@ -13,6 +13,8 @@ import { LuPackage2 } from "react-icons/lu";
 import { GiClothes } from "react-icons/gi";
 import { PiBuildingApartmentLight } from "react-icons/pi";
 import logo from '../../assets/logo.jpeg'
+import { signOut, getAuth } from "firebase/auth";
+import { app } from "../../utils/firebase";
 
 const Header = () => {
   const [nav, setNav] = useState(false);
@@ -21,6 +23,22 @@ const Header = () => {
   const [searchString, setSearchString] = useState("");
   const loc = useLocation();
   const navigate = useNavigate();
+  const auth = getAuth(app)
+
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful
+        localStorage.removeItem('user')
+        console.log("User signed out successfully.");
+        setLoggedIn(false)
+        navigate('/')
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error("Error signing out: ", error);
+      });
+  }
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -178,7 +196,10 @@ const Header = () => {
                 </li>
                 {isLoggedIn ? (
                   <li className="flex my-1 items-center font-normal mx-auto w-full  bg-black    text-white rounded-sm cursor-pointer">
-                    <a className="flex w-full justify-center p-2  bg-red-500 text-white items-center">
+                    <a
+                      onClick={logout}
+                      className="flex w-full justify-center p-2  bg-red-500 text-white items-center"
+                    >
                       LOG OUT
                     </a>
                   </li>
