@@ -5,7 +5,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { usePaystackPayment } from "react-paystack";
 import { toast } from "react-toastify";
 import Banner from "../../components/banner/Banner";
-import { useState } from "react";
+import React ,{ useState } from "react";
 
 const Cart = () => {
   const { cartArray, removeFromCart } = Store();
