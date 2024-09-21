@@ -1,49 +1,47 @@
+import { useState, useEffect } from "react";
+import useLocalUser from "../../../hooks/localStorageHook";
+import { collection,
+   getFirestore, 
+   getDocs
+  } from "firebase/firestore";
+import {app} from '../../../utils/firebase'
+import { toast } from "react-toastify";
+const db = getFirestore(app)
 function Orders() {
+  const [productLists, setProducts] = useState([])
+  
+  useEffect(() => {
+        const user = localStorage.getItem('user');
+        
+        const getComplexQuery = async () => {
+            if (user) {
+                const email = JSON.parse(user).user.email;
+                const colRef = collection(db, "orders", email, "orders");
+                
+                try {
+                    const docsSnap = await getDocs(colRef);
+                    const products = []; // Temporary array to hold fetched products
+
+                    docsSnap.forEach((doc) => {
+                        products.push(doc.data()); // Push each document's data into the array
+                    });
+
+                    setProducts(products); // Set the state with the fetched products
+                    console.log(products); // Log the fetched products
+                } catch (error) {
+                    toast.error("Error fetching documents: ");
+                }
+            }
+        };
+
+        getComplexQuery();
+    }, []);
   // Sample data for orders (you can replace this with your actual data)
   const orders = [
-    {
-      id: 1,
-      image: "/api/placeholder/100/100",
-      productName: "Product 1",
-      quantity: 2,
-      price: 29.99,
-      status: "Shipped",
-    },
-    {
-      id: 2,
-      image: "/api/placeholder/100/100",
-      productName: "Product 2",
-      quantity: 1,
-      price: 49.99,
-      status: "Processing",
-    },
-    {
-      id: 3,
-      image: "/api/placeholder/100/100",
-      productName: "Product 3",
-      quantity: 3,
-      price: 19.99,
-      status: "Delivered",
-    },
-    {
-      id: 4,
-      image: "/api/placeholder/100/100",
-      productName: "Product 4",
-      quantity: 1,
-      price: 39.99,
-      status: "Shipped",
-    },
-    {
-      id: 5,
-      image: "/api/placeholder/100/100",
-      productName: "Product 5",
-      quantity: 2,
-      price: 24.99,
-      status: "Delivered",
-    },
+    
     {
       id: 6,
-      image: "/api/placeholder/100/100",
+      image: "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/26/006249/1.jpg?0364",
       productName: "Product 6",
       quantity: 1,
       price: 59.99,
@@ -52,41 +50,27 @@ function Orders() {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
+    <div className="w-full min-h-screen p-4 ">
       <h1 className="text-xl sm:text-2xl font-bold mb-4">Your Orders</h1>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {orders.map((order) => (
-          <div key={order.id} className="bg-white rounded-lg shadow-md p-4">
-            <div className="flex items-center mb-2">
-              <img
-                src={order.image}
-                alt={order.productName}
-                className="w-16 h-16 object-cover rounded mr-4"
-              />
-              <div>
-                <h2 className="font-semibold">{order.productName}</h2>
-                <p className="text-sm text-gray-600">
-                  Quantity: {order.quantity}
-                </p>
+      <div className="grid gap-2 grid-cols-2 ">
+        {productLists.map((each) =>
+          each.items.map((order) => (
+            <div className="px-3 bg-base-100 w-40 h-48 shadow-xl">
+              <figure className="">
+                <img
+                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                  alt="Shoes"
+                  className="rounded-xl mt-2 w-full"
+                />
+              </figure>
+              <div className="flex items-center flex-col text-center">
+                <h1 className="font-thin mt-2 text-sm">{order.title}</h1>
+                <div className="badge badge-outline  font-light ml-auto mt-4">Fashion</div>
               </div>
+              
             </div>
-            <div className="flex justify-between items-center">
-              <span className="font-bold">${order.price.toFixed(2)}</span>
-              <span
-                className={`px-2 py-1 rounded-full text-xs font-semibold
-                  ${
-                    order.status === "Delivered"
-                      ? "bg-green-200 text-green-800"
-                      : order.status === "Shipped"
-                      ? "bg-yellow-200 text-yellow-800"
-                      : "bg-blue-200 text-blue-800"
-                  }`}
-              >
-                {order.status}
-              </span>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

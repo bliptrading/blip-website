@@ -7,7 +7,7 @@ function ProfilePage() {
       <div className="drawer md:drawer-open lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col ">
-          <div className="w-3/4 m-10">
+          <div className="w-full ">
             <Outlet />
           </div>
         </div>

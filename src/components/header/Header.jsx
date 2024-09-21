@@ -245,14 +245,15 @@ const Header = () => {
           </ul>
 
           <div className="">
-            <Link to="/cart" className="flex items-center">
-              <AiOutlineShoppingCart size={25} className="text-red-500 " />
+            <Link to="/cart" className="flex  items-center">
+              <AiOutlineShoppingCart size={30} className="text-red-500 " />
               <span className="relative flex items-center justify-center w-4 h-4 text-xs text-white rounded-full right-2 bg-stone-700 bottom-2">
                 {cartArray.length}
               </span>
             </Link>
           </div>
-          <Link to="/accounts/login">
+
+          <Link to={!isLoggedIn ? "/accounts/login" : "/profile/settings"}>
             <AiOutlineUser className="text-red-500 " size={25} />
           </Link>
         </div>

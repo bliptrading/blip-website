@@ -145,14 +145,16 @@ function ProductList() {
     filterProducts();
   }, [loc.pathname, searchParams]); // Add searchParams as a dependency
 
-  const handleSearch = () => {
-    if (loc.pathname !== '/') {
-      navigate(`${loc.pathname}?q=` + searchString);
+   const handleSearch = () => {
+     if (searchString.trim() === "") return; // Prevent empty searches
 
-    }
-    navigate(`/?q=` + searchString);
-
-  };
+     // Navigate based on current location
+     if (loc.pathname !== "/") {
+       navigate(`${loc.pathname}?q=${encodeURIComponent(searchString)}`);
+     } else {
+       navigate(`/?q=${encodeURIComponent(searchString)}`);
+     }
+   };
 
 
   return (
@@ -178,8 +180,9 @@ function ProductList() {
           type="text"
           onChange={(e) => setSearchString(e.target.value)}
           placeholder="Search products and categories"
-          className="flex-1 h-10 rounded-sm p-4  text-black outline-none  active:ring-red-300 active:outline-red-300 "
+          className="flex-1 h-10 rounded-sm p-4 font-light text-black border-2 shadow-md  ring-0 focus:border-red-500 focus:outline-none"
         />
+
         <button
           onClick={handleSearch}
           className="flex mx-2 items-center h-10 rounded-sm px-3 py-4 text-white bg-red-500"
@@ -188,7 +191,7 @@ function ProductList() {
         </button>
       </div>
       {filteredProduct.length > 0 ? (
-        <div className="grid lg:gap-10 grid-cols-2 mt-8  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 ">
+        <div className="grid lg:gap-10 grid-cols-2 mt-2  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 ">
           <ProductCard products={filteredProduct} />
         </div>
       ) : (

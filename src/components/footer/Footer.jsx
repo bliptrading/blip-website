@@ -3,6 +3,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FiTwitter, FiPhoneCall } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
+import logo from '../../assets/logo.jpeg'
 
 const Footer = () => {
   return (
@@ -47,7 +48,7 @@ const Footer = () => {
         </ul>
       </div>
       <div className="flex flex-col items-center w-32 text-center ">
-        <img alt="blip logo" src="/bplip2.jpeg" className="" />
+        <img alt="blip logo" src={logo} className="" />
         <p className="mt-2 text-sm text-gray-600">
           The best place for your shopping
         </p>
