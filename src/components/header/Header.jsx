@@ -184,35 +184,61 @@ const Header = () => {
           >
             {nav && (
               <div className="flex flex-col mx-2 text-lg h-96">
-                <li className="flex my-2 items-center font-thin  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
-                  <Link to="/profile/settings" className="flex items-center">
-                    <IoSettingsOutline className="mr-2" /> My Account
-                  </Link>
-                </li>
-                <li className="flex my-1 items-center font-thin  bg-black   w-44 p-2 text-white rounded-sm cursor-pointer">
-                  <Link to="/profile/orders" className="flex items-center">
-                    <LuPackage2 size={20} className="mr-2" /> Orders
-                  </Link>
-                </li>
-                {isLoggedIn ? (
-                  <li className="flex my-1 items-center font-normal mx-auto w-full  bg-black    text-white rounded-sm cursor-pointer">
-                    <a
-                      onClick={logout}
-                      className="flex w-full justify-center p-2  bg-red-500 text-white items-center"
-                    >
-                      LOG OUT
-                    </a>
-                  </li>
+                {loc.pathname.split("/")[1] !== "admin" ? (
+                  <>
+                    <li className="flex my-2 items-center font-thin  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                      <Link
+                        to="/profile/settings"
+                        className="flex items-center"
+                      >
+                        <IoSettingsOutline className="mr-2" /> My Account
+                      </Link>
+                    </li>
+                    <li className="flex my-1 items-center font-thin  bg-black   w-44 p-2 text-white rounded-sm cursor-pointer">
+                      <Link to="/profile/orders" className="flex items-center">
+                        <LuPackage2 size={20} className="mr-2" /> Orders
+                      </Link>
+                    </li>
+                    {isLoggedIn ? (
+                      <li className="flex my-1 items-center font-normal mx-auto w-full  bg-black    text-white rounded-sm cursor-pointer">
+                        <a
+                          onClick={logout}
+                          className="flex w-full justify-center p-2  bg-red-500 text-white items-center"
+                        >
+                          LOG OUT
+                        </a>
+                      </li>
+                    ) : (
+                      <Link
+                        to="/accounts/signup"
+                        className="flex my-1 items-center font-normal mx-auto w-full  bg-black    text-white rounded-sm cursor-pointer"
+                      >
+                        <a className="flex w-full justify-center p-2  bg-red-500 text-white items-center">
+                          REGISTER
+                        </a>
+                      </Link>
+                    )}
+                  </>
                 ) : (
-                  <Link
-                    to="/accounts/signup"
-                    className="flex my-1 items-center font-normal mx-auto w-full  bg-black    text-white rounded-sm cursor-pointer"
-                  >
-                    <a className="flex w-full justify-center p-2  bg-red-500 text-white items-center">
-                      REGISTER
-                    </a>
-                  </Link>
+                  <>
+                    <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                      <Link to="/" className="flex items-center">
+                        <IoBasketOutline size={30} className="mr-1" /> Dashboard
+                      </Link>
+                    </li>
+                    <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                      <Link to="/" className="flex items-center">
+                        <IoBasketOutline size={30} className="mr-1" /> Orders
+                      </Link>
+                    </li>
+                    <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                      <Link to="/" className="flex items-center">
+                        <IoBasketOutline size={30} className="mr-1" /> Products
+                      </Link>
+                    </li>
+                  </>
                 )}
+
                 <li className="h-8 border-t font-thin border-t-gray-700 w-full">
                   <span className="mx-3 ">CATEGORIES</span>
                 </li>

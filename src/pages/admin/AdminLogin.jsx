@@ -5,19 +5,19 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import Store from "../../store/Store";
 
-function Login() {
+function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const auth = getAuth(app);
-  const { setLoggedIn} = Store()
+  const { setLoggedIn } = Store();
 
   const signIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         localStorage.setItem("user", JSON.stringify(userCredential));
-        setLoggedIn(true)
+        setLoggedIn(true);
         navigate("/");
       })
       .catch((error) => {
@@ -32,7 +32,7 @@ function Login() {
       <div className="flex flex-col items-center justify-center ">
         <div className="w-4/6 md:w-3/6 lg:w-2/6">
           <h1 className="flex sm:text-base items-center justify-center m-8 lg:text-4xl font-semibold ">
-            WELCOME BACK
+            ADMIN LOGIN
           </h1>
 
           <form>
@@ -68,12 +68,6 @@ function Login() {
               & Sale.
             </p>
 
-            <p className="m-6 text-sm">
-              <span>Don't have an account? </span>
-              <Link to="/accounts/signup" className="hover:text-red-500">
-                Create an account here
-              </Link>
-            </p>
           </div>
         </div>
       </div>
@@ -82,4 +76,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AdminLogin;

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FaTrashAlt, FaEdit, FaPlus } from "react-icons/fa";
 
-
 const products = [
   {
     title: "Amazon Echo (3rd generation)",
@@ -22,8 +21,7 @@ const categories = [
 
 export default function ProductsTab() {
   const [activeTab, setActiveTab] = useState("all");
-  const [editingProduct, setEditingProduct] =
-    (useState < ProductItem) | (null > null);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const filteredProducts =
     activeTab === "all"
@@ -35,59 +33,51 @@ export default function ProductsTab() {
   };
 
   const handleDelete = (id) => {
-    // In a real application, you would update the state or make an API call here
     console.log(`Deleting product with id: ${id}`);
+    // Here you would typically filter out the deleted product from the state
   };
 
   const handleSave = (updatedProduct) => {
-    // In a real application, you would update the state or make an API call here
     console.log("Saving updated product:", updatedProduct);
     setEditingProduct(null);
+    // Logic to update the product in your state or database would go here
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full">
       <h1 className="text-3xl font-bold mb-6">Manage Products</h1>
-
-      <div className="tabs tabs-boxed mb-6">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`tab ${activeTab === category ? "tab-active" : ""}`}
-            onClick={() => setActiveTab(category)}
-          >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid gap-2 md:gap-0 lg:gap-0 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
         {filteredProducts.map((product) => (
-          <div key={product.id} className="card bg-base-100 shadow-xl">
+          <div
+            key={product.id}
+            className="p-1 lg:px-4 overflow-hidden my-8 bg-base-100 w-40 lg:w-60 h-60 shadow-xl"
+          >
             <figure>
               <img
                 src={product.image}
                 alt={product.title}
-                className="h-48 w-full object-cover"
+                className="rounded-xl h-36 w-full"
               />
             </figure>
-            <div className="card-body">
-              <h2 className="card-title">{product.title}</h2>
-              <p>Category: {product.category}</p>
-              <p>Price: ${product.price}</p>
-              <p>Quantity: {product.quantity}</p>
-              <div className="card-actions justify-end mt-4">
+            <div className="flex items-center flex-col text-center">
+              <h1 className="font-thin mt-2 text-sm overflow-clip">
+                {product.title}
+              </h1>
+              <div className="badge badge-outline font-light ml-auto mt-4">
+                {product.category}
+              </div>
+              <div className="flex justify-between mt-2 w-full">
                 <button
-                  className="btn btn-primary"
                   onClick={() => handleEdit(product)}
+                  className="text-blue-500 hover:text-blue-700"
                 >
-                  <FaEdit className="mr-2" /> Edit
+                  <FaEdit />
                 </button>
                 <button
-                  className="btn btn-error"
                   onClick={() => handleDelete(product.id)}
+                  className="text-red-500 hover:text-red-700"
                 >
-                  <FaTrashAlt className="mr-2" /> Delete
+                  <FaTrashAlt />
                 </button>
               </div>
             </div>

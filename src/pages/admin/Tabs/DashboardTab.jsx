@@ -8,17 +8,62 @@ function DashboardTab() {
     <div className="w-full h-full">
       <div className="w-full">
         <div className="flex mt-2 flex-row">
-          <button className="btn  mx-2 text-white btn-success">
-            <IoBagAddSharp />
+          {/* Open the modal using document.getElementById('ID').showModal() method */}
+          <button
+            className="btn ml-4 bg-red-500 text-white"
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
             New Product
           </button>
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box">
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                  ✕
+                </button>
+              </form>
+              <h3 className="font-bold text-lg mb-4">New Product!</h3>
+              <form className="form-control w-full ">
+                <div className="mb-4 w-full ">
+                  <label htmlFor="my-1">Product Title</label>
+                  <input
+                    type="text"
+                    placeholder="title"
+                    className="input input-bordered w-full"
+                  />
+                </div>
+                <div className="mb-4 w-full ">
+                  <label htmlFor="my-1">Product Price</label>
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    className="input input-bordered w-full"
+                  />
+                </div>
+                <div className="mb-4 w-full ">
+                  <input
+                    type="file"
+                    placeholder="product image"
+                    className="file-input file-input-bordered w-full max-w-xs"
+                  />
+                </div>
+                <div className="mb-4 w-full ">
+                  <textarea
+                    className="textarea w-full"
+                    placeholder="Description"
+                  ></textarea>
+                </div>
+                <a className="btn font-light text-lg text-white bg-red-500 rounded-md">Save</a>
+              </form>
+            </div>
+          </dialog>
 
           <button className="btn  text-white mx-2 btn-warning">Export</button>
         </div>
       </div>
 
       {/* Product Modal */}
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+      <dialog id="my_modal_5" className="modal  modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Hello!</h3>
           <p className="py-4">

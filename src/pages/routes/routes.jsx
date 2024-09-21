@@ -16,6 +16,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import { useState, useEffect } from "react";
 import Cart from "../cart/Cart";
 import { useLocation } from "react-router-dom";
+import AdminLogin from "../admin/AdminLogin";
+import AdminProtected from "./AdminProtected";
+import NotFound from "../../components/404/NotFound";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -25,7 +28,7 @@ function RoutesLayout() {
     const user = localStorage.getItem("user");
     if (user) {
       const parsedUser = JSON.parse(user);
-      setAuthenticated(!!parsedUser.email); // Set true if email exists
+      setAuthenticated(!!parsedUser.user.email); // Set true if email exists
     } else {
       setAuthenticated(false); // User not found
     }
@@ -42,24 +45,27 @@ function RoutesLayout() {
         <Route
           path="profile"
           element={
-            <ProtectedRoute
-              isAuthenticated={isAuthenticated}
-              element={<ProfilePage />}
-            />
+            <ProtectedRoute state={isAuthenticated} element={<ProfilePage />} />
           }
         >
           <Route path="settings" element={<AccountPage />} />
           <Route path="orders" element={<Orders />} />
         </Route>
-        <Route path="/admin" element={<AdminPage />}>
-          <Route path="dashboard" index element={<DashboardTab />} />
+        <Route
+          path="/admin"
+          element={<AdminProtected state={true} element={<AdminPage />} />}
+        >
+          <Route path="dashboard" element={<DashboardTab />} />
           <Route path="customers" element={<CustomersTab />} />
           <Route path="orders" element={<OrdersTab />} />
           <Route path="products" element={<ProductsTab />} />
         </Route>
+
         <Route path="/cart" element={<Cart />} />
         <Route path="/accounts/login" element={<Login />} />
         <Route path="/accounts/signup" element={<Register />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
       <Footer />
     </>

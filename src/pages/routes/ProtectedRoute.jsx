@@ -2,10 +2,10 @@ import { Navigate } from "react-router-dom";
 
 
 function ProtectedRoute({ state, element }) {
-  if (state === false) {
-    return <Navigate to="/accounts/login" replace />;
+  if (state) {
+    return <>{element};</>;
   }
-  return <>{element};</>;
+  return <Navigate to="/accounts/login"  />;
 }
 
 export default ProtectedRoute;

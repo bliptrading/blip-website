@@ -6,7 +6,7 @@ const Store = create(
     (set) => ({
       cart: 0,
       isLoggedIn: false,
-      setIsLoggedIn: (val) => set(() => ({ isLoggedIn: val })),
+      setLoggedIn: (val) => set(() => ({ isLoggedIn: val })),
       cartArray: [],
       addToCart: (item) =>
         set((state) => ({ cartArray: [...state.cartArray, item] })),

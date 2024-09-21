@@ -13,12 +13,7 @@ function AdminPage() {
           <div className="drawer-content flex flex-col items-center justify-center">
             <Outlet />
 
-            <label
-              htmlFor="my-drawer-2"
-              className="btn btn-primary drawer-button lg:hidden"
-            >
-              Open drawer
-            </label>
+            
           </div>
 
           {/* Sidebar Menu */}
@@ -52,13 +47,7 @@ function AdminPage() {
                 <HiOutlineShoppingBag className="" color="white" size={30} />
                 <a className="mt-1 mx-2">Products</a>
               </NavLink>
-              <NavLink
-                to={"customers"}
-                className="flex flex-row  p-3 hover:bg-red-500"
-              >
-                <HiOutlineUsers className="" color="white" size={30} />
-                <a className="mt-1 mx-2">Customers</a>
-              </NavLink>
+              
             </ul>
           </div>
         </div>
