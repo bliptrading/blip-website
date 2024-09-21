@@ -1,108 +1,54 @@
 function AccountPage() {
   return (
     <div className="w-full h-full  p-2">
-      <h1 className="font-roboto-thin text-2xl mb-6">Account Overview</h1>
-      <form className="w-full  bg-white shadow-md rounded-lg p-6">
-        <div className="mb-4">
-          <label htmlFor="firstName" className="label">
-            <span className="label-text">First Name</span>
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            placeholder="Enter your first name"
-            className="input input-bordered w-full"
-          />
+      <div className="font-roboto-thin w-full text-2xl m-6">Account Overview</div>
+      <div className="grid grid-cols-1  lg:grid-cols-2">
+        <div className="w-[22rem] lg:w-[30rem] h-auto my-2 border border-gray-300">
+          <h1 className="p-4 ml-20 lg:ml-40 font-thin text-md">Personal Information</h1>
+          <form className="w-full p-4 form-control h-full ">
+            <label className="my-2 font-thin input input-bordered flex items-center gap-2">
+              @username
+              <input type="text" className="grow" placeholder="username" />
+            </label>
+            <label className="my-2 font-thin input input-bordered flex items-center gap-2">
+              @email
+              <input type="text" className="grow" placeholder="Email" />
+            </label>
+            <label className="my-2 font-thin input input-bordered flex items-center gap-2">
+              <input
+                type="text"
+                className="grow"
+                placeholder="Current Password"
+              />
+            </label>
+            <label className="my-2 font-thin input input-bordered flex items-center gap-2">
+              <input type="text" className="grow" placeholder="New Password" />
+            </label>
+            <a className="btn bg-red-400 text-white w-40">Save</a>
+          </form>
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="lastName" className="label">
-            <span className="label-text">Last Name</span>
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            placeholder="Enter your last name"
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="username" className="label">
-            <span className="label-text">Username</span>
-          </label>
-          <input
-            type="text"
-            id="username"
-            placeholder="Enter your username"
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="email" className="label">
-            <span className="label-text">Email</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="phone" className="label">
-            <span className="label-text">Phone Number</span>
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            placeholder="Enter your phone number"
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="address" className="label">
-            <span className="label-text">Address</span>
-          </label>
-          <textarea
-            id="address"
-            placeholder="Enter your address"
-            rows={3}
-            className="textarea textarea-bordered w-full"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="password" className="label">
-            <span className="label-text">Password</span>
-          </label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter a new password (leave blank to keep current)"
-            className="input input-bordered w-full"
-          />
-        </div>
-
-        {/* Update Account Button */}
-        <button
-          type="submit"
-          className="
-              bg-red-500 
-              p-4 
-              text-lg 
-              text-white 
-              hover:bg-red-400 
-              w-full 
-              mt-4 rounded-lg transition duration-200 ease-in-out
-           "
-        >
-          Update Account
-        </button>
-      </form>
+        <div className="w-[22rem] lg:w-[30rem] h-auto my-2 border border-gray-300">
+          <div className="p-4 lg:ml-40 ml-20 font-thin text-md">Account Information</div>
+          <form className="w-full p-4 form-control h-full ">
+            <label className="my-2 font-thin input input-bordered flex items-center gap-2">
+              Phone
+              <input type="text" className="grow" placeholder="username" />
+            </label>
+            <label className="my-2 font-thin input input-bordered flex items-center gap-2">
+              Address
+              <input type="text" className="grow" placeholder="Email" />
+            </label>
+            <select className="select mt-4 select-bordered w-full">
+              <option disabled selected>
+                Location
+              </option>
+              <option>Kumasi</option>
+              <option>Accra</option>
+            </select>
+            <a className="btn mt-16 bg-red-400 text-white w-40">Save</a>
+          </form>
+        </div>{" "}
+      </div>
     </div>
   );
 }

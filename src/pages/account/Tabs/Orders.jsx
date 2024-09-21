@@ -52,22 +52,23 @@ function Orders() {
   return (
     <div className="w-full min-h-screen p-4 ">
       <h1 className="text-xl sm:text-2xl font-bold mb-4">Your Orders</h1>
-      <div className="grid gap-2 grid-cols-2 ">
+      <div className="grid gap-2 md:gap-0 lg:gap-0 lg:grid-cols-4  md:grid-cols-3 grid-cols-2 ">
         {productLists.map((each) =>
           each.items.map((order) => (
-            <div className="px-3 bg-base-100 w-40 h-48 shadow-xl">
+            <div className="p-1 lg:px-4 overflow-hidden my-8 bg-base-100 w-40 lg:w-60  h-60 shadow-xl">
               <figure className="">
                 <img
-                  src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                  src={order.image}
                   alt="Shoes"
-                  className="rounded-xl mt-2 w-full"
+                  className="rounded-xl h-36 w-full"
                 />
               </figure>
               <div className="flex items-center flex-col text-center">
-                <h1 className="font-thin mt-2 text-sm">{order.title}</h1>
-                <div className="badge badge-outline  font-light ml-auto mt-4">Fashion</div>
+                <h1 className="font-thin mt-2 text-sm overflow-clip">{order.title}</h1>
+                <div className="badge badge-outline  font-light ml-auto mt-4">
+                  {order.category}
+                </div>
               </div>
-              
             </div>
           ))
         )}
