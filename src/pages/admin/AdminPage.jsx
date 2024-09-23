@@ -19,7 +19,7 @@ function AdminPage() {
     <>
       {/* Main Content Area */}
       <div className="m-2 lg:hidden">
-        <IoArrowBack onClick={goBack}  size={30} />
+        <IoArrowBack onClick={goBack} size={30} />
       </div>
       <div className="w-full flex h-full flex-row">
         {/* Drawer for Sidebar Navigation */}
@@ -39,7 +39,9 @@ function AdminPage() {
             <ul className="menu  bg-black font-light text-base text-white min-h-full w-80 p-4">
               <NavLink
                 to={"dashboard"}
-                className="flex flex-row hover:bg-red-500 p-3"
+                className={({ isActive }) => `flex flex-row mb-2 hover:bg-red-500 p-3
+                  ${isActive ? "bg-red-500": ''}
+                `}
               >
                 <RiHome6Line className="" color="white" size={30} />
                 <a className="mt-1 mx-2 roboto-thin text-lg font-medium ">
@@ -47,22 +49,28 @@ function AdminPage() {
                 </a>
               </NavLink>
               <NavLink
-                to={"orders"}
-                className="flex flex-row  p-3 hover:bg-red-500"
-              >
+              to={'orders'}
+                className={({ isActive }) => `flex flex-row my-2 hover:bg-red-500 p-3
+                    ${isActive ? 'bg-red-500': null}
+                `}
+              > 
                 <CgNotes className="" color="white" size={30} />
                 <a className="mx-2">Orders</a>
               </NavLink>
               <NavLink
                 to={"products"}
-                className="flex flex-row  p-3 hover:bg-red-500"
+                className={({ isActive }) => `flex flex-row my-2 hover:bg-red-500 p-3
+                  ${isActive ?  "bg-red-500": ''}
+                `}
               >
                 <HiOutlineShoppingBag className="" color="white" size={30} />
                 <a className="mt-1 mx-2">Products</a>
               </NavLink>
               <NavLink
                 to={"blog"}
-                className="flex flex-row  p-3 hover:bg-red-500"
+                className={({ isActive }) => `flex flex-row my-2 hover:bg-red-500 p-3
+                  ${isActive ? "bg-red-500": ''}
+                `}
               >
                 <IoNewspaperOutline className="" color="white" size={30} />
                 <a className="mt-1 mx-2">Blog</a>
