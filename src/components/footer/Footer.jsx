@@ -44,6 +44,8 @@ const Footer = () => {
         <ul className="space-y-5 mt-4 font-light  cursor-pointer">
           <li className="mb-2">About Us</li>
           <Link className="my-2" to={'/blog'}>Blog</Link>
+          <Link className="my-2" to={'/admin/dashboard'}>Admin</Link>
+
           <li>Contact</li>
         </ul>
       </div>
