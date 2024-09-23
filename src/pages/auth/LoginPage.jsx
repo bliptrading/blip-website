@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { app } from "../../utils/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Store from "../../store/Store";
 
 function Login() {
@@ -11,8 +11,11 @@ function Login() {
   const navigate = useNavigate();
   const auth = getAuth(app);
   const { setLoggedIn} = Store()
+  const [isLoading, setLoading] = useState(false);
+
 
   const signIn = (e) => {
+    setLoading(true)
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -23,7 +26,9 @@ function Login() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        toast(errorCode, errorMessage);
+        toast.error( errorCode);
+      }).finally(()=> {
+        setLoading(false)
       });
   };
 
@@ -58,7 +63,11 @@ function Login() {
                 className="w-2/4 px-6 py-3 my-6 font-light text-lg text-white bg-red-500 rounded-sm shadow "
                 onClick={signIn}
               >
-                SIGNIN
+                {isLoading ? (
+                  <span className="loading loading-spinner mx-auto loading-lg"></span>
+                ) : (
+                  <h1>SIGN IN</h1>
+                )}
               </button>
             </div>
           </form>
@@ -78,6 +87,7 @@ function Login() {
         </div>
       </div>
       <div className="mx-4 lg:mx-8 xl:mx-10 my-[7rem]">{/* <Banner /> */}</div>
+      <ToastContainer />
     </div>
   );
 }

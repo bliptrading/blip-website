@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFileExport, FaSort } from "react-icons/fa";
+import { IoArrowBack } from "react-icons/io5";
+import  {app} from '../../../utils/firebase';
+import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { LuEye } from "react-icons/lu";
 
 const orderData = [
   {
@@ -13,73 +17,93 @@ const orderData = [
   },
   // ... (other data entries)
 ];
-
+const db = getFirestore(app)
 function OrdersTab() {
-  const [orders, setOrders] = useState(orderData);
-  const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: "ascending",
-  });
+  const [orderList, setOrderList] = useState([])
+  const [isLoading, setLoading] = useState(false)
 
-  const sortData = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      setLoading(true)
+      try {
+        let allDocs = []
+       const querySnapShot =  await getDocs(collection(db,'orders'))
+       querySnapShot.forEach((doc)=> {
+        allDocs.push(doc.data())
+       })
+       console.log(allDocs)
+       setOrderList(allDocs)
+      }catch(err) {
+
+      }finally {
+        setLoading(false)
+      }
     }
-    const sortedOrders = [...orders].sort((a, b) => {
-      if (a[key] < b[key]) return direction === "ascending" ? -1 : 1;
-      if (a[key] > b[key]) return direction === "ascending" ? 1 : -1;
-      return 0;
-    });
-    setOrders(sortedOrders);
-    setSortConfig({ key, direction });
-  };
+    fetchData()
+  }, [])
 
   return (
     <div className="w-full p-4 h-full">
-      <h1 className="text-2xl font-bold mb-4">Orders</h1>
-      <div className="mb-4">
+      <h1 className="text-xl text-center lg:font-light font-thin mb-6">
+        Orders
+      </h1>
+      <div className="mb-4 flex justify-between">
         <button className="btn btn-warning text-white">
           <FaFileExport className="mr-2" /> Export
         </button>
+        <select
+          required
+          className="select select-sm select-bordered w-full max-w-xs"
+        >
+          <option disabled selected>
+            Filter
+          </option>
+          <option>Latest</option>
+          <option>Electronics</option>
+        </select>
       </div>
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead>
-            <tr>
-              {[
-                "name",
-                "job",
-                "company",
-                "location",
-                "lastLogin",
-                "favoriteColor",
-              ].map((key) => (
-                <th
-                  key={key}
-                  onClick={() => sortData(key)}
-                  className="cursor-pointer"
-                >
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                  {sortConfig.key === key && <FaSort className="inline ml-1" />}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td>{order.name}</td>
-                <td>{order.job}</td>
-                <td>{order.company}</td>
-                <td>{order.location}</td>
-                <td>{order.lastLogin}</td>
-                <td>{order.favoriteColor}</td>
+      {isLoading ? (
+        <div className="w-full flex flex-col space-y-2">
+          <div className="skeleton rounded-md h-12 w-full"></div>
+          <div className="skeleton rounded-md h-12 w-full"></div>
+          <div className="skeleton rounded-md h-12 w-full"></div>
+        </div>
+      ) : (
+        <div className="overflow-x-scroll overflow-y-scroll max-h-48 ">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Date</th>
+                <th>No of Items</th>
+                <th>Amount (GHS)</th>
+                <th>View</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {orderList.map((order) => (
+                <tr>
+                  <th>{order.orderId}</th>
+                  <td>{order.fullname}</td>
+                  <td>{order.email}</td>
+                  <th>{order.number}</th>
+                  <td>{order.date}</td>
+                  <td>{order.items?.length}</td>
+                  <td>{order.amount}</td>
+                  <td className="btn m-2">
+                    <LuEye size={20} className="text-red-500"></LuEye>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

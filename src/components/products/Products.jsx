@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import ProductCard from "../product-card/ProductCard";
 import { useLocation,  useSearchParams, useNavigate } from "react-router-dom";
 import NotFound from "../404/NotFound";
-
+import BlogSection from "../blog-section/BlogSection";
+import Banner from "../banner/Banner";
 
 
 const product = [
@@ -153,6 +154,7 @@ const Products = () => {
   };
 
   return (
+  
     <main
       className="container mt-[3rem] mx-auto px-5 lg:px-10 font-Lato"
       id="product"
@@ -195,7 +197,17 @@ const Products = () => {
       ) : (
         <NotFound />
       )}
+      <div className="w-full">
+        <Banner />
+
+      </div>
+      <section className="w-full ">
+          <h1 className="text-white my-12 bg-red-500 p-2 text-center font-medium text-2xl">Blog Posts</h1>
+        <BlogSection />
+      </section>
+      
     </main>
+   
   );
 };
 

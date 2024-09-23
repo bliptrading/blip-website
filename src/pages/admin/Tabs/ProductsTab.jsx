@@ -1,5 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTrashAlt, FaEdit, FaPlus } from "react-icons/fa";
+import { getFirestore,
+   updateDoc,
+   getDocs,
+   doc ,
+   collection, 
+   deleteDoc } from "firebase/firestore";
+import { getStorage, ref, deleteObject} from "firebase/storage";
+import { app } from "../../../utils/firebase";
+import { ToastContainer, toast } from "react-toastify";
+
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 const products = [
   {
@@ -14,15 +26,12 @@ const products = [
   // ... (rest of the product data)
 ];
 
-const categories = [
-  "all",
-  ...new Set(products.map((product) => product.category)),
-];
 
 export default function ProductsTab() {
   const [activeTab, setActiveTab] = useState("all");
   const [editingProduct, setEditingProduct] = useState(null);
-
+  const [allProducts, setAllProducts] = useState([])
+  const [isLoading, setLoading] = useState(false)
   const filteredProducts =
     activeTab === "all"
       ? products
@@ -32,83 +41,148 @@ export default function ProductsTab() {
     setEditingProduct(product);
   };
 
-  const handleDelete = (id) => {
-    console.log(`Deleting product with id: ${id}`);
-    // Here you would typically filter out the deleted product from the state
+  const handleDelete = async(product) => {
+    
+    try {
+      const imageRef = ref(storage,`products/${product.pathRef}`);
+      await deleteDoc(doc(db, "products", product._id));
+      await deleteObject(imageRef);
+      toast.success("Product deleted successfully")
+    }catch(err) {
+      console.log(err)
+      toast.error("Could not delete product")
+    }
   };
 
-  const handleSave = (updatedProduct) => {
+  const handleSave = async(updatedProduct) => {
     console.log("Saving updated product:", updatedProduct);
-    setEditingProduct(null);
-    // Logic to update the product in your state or database would go here
+    try {
+      const currentRef = doc(db, "products", updatedProduct._id);
+      await updateDoc(currentRef, {
+        ...updatedProduct
+      });
+      toast.success(
+        "Product edited sucessfully"
+      )
+      setEditingProduct(null);
+
+    }catch(err){
+      toast.success(err);
+    }
   };
+
+
+  useEffect(()=> {
+    const fetchProducts = async()=> {
+      setLoading(true)
+      try {
+        let allDocs = [];
+        const querySnapshot = await getDocs(collection(db, "products"));
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id)
+          allDocs.push({_id:doc.id, ...doc.data()})
+          setAllProducts(allDocs)
+          
+          
+        });
+      }catch (err){
+        toast.error("Product could not be loaded")
+        
+      }finally {
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+    
+  },[])
 
   return (
-    <div className="w-full">
-      <h1 className="text-3xl font-bold mb-6">Manage Products</h1>
-      <div className="grid gap-2 md:gap-0 lg:gap-0 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
-        {filteredProducts.map((product) => (
+    <div className="w-full h-full p-4">
+      <h1 className="text-xl text-center lg:font-light font-thin mb-6">
+        Manage Products
+      </h1>
+      {isLoading ? (
+        <div className="w-full flex flex-row space-x-4">
+          <div className="skeleton rounded-md h-44 w-44 lg:w-60 lg:h-60"></div>
+          <div className="skeleton rounded-md h-44 w-44 lg:w-60 lg:h-60"></div>
+          <div className="skeleton hidden lg:block rounded-md h-44 w-44 lg:w-60 lg:h-60"></div>
+          <div className="skeleton hidden lg:block rounded-md h-44 w-44 lg:w-60 lg:h-60"></div>
+        </div>
+      ) : (
+        
+        <div className="grid gap-2 md:gap-0 lg:gap-0 lg:grid-cols-4 md:grid-cols-3 grid-cols-2">
+        {allProducts.map((product) => (
           <div
             key={product.id}
-            className="p-1 lg:px-4 overflow-hidden my-8 bg-base-100 w-40 lg:w-60 h-60 shadow-xl"
+            className="p-1 lg:px-4 overflow-hidden my-8 bg-base-100 w-40 lg:w-60  shadow-xl"
           >
             <figure>
               <img
-                src={product.image}
-                alt={product.title}
+                src={product.imageUrl}
+                alt={product.name}
                 className="rounded-xl h-36 w-full"
               />
             </figure>
             <div className="flex items-center flex-col text-center">
               <h1 className="font-thin mt-2 text-sm overflow-clip">
-                {product.title}
+                {product.name}
               </h1>
-              <div className="badge badge-outline font-light ml-auto mt-4">
-                {product.category}
+              <h1 className="font-light ml-auto text-lg overflow-clip">
+                GH&#8373; {product.price}
+              </h1>
+              <div className="w-full flex flex-col">
+                <div className="badge mx-2 badge-outline font-light ml-auto mt-4">
+                  {product.category}
+                </div>
+                <div className="badge badge-outline font-light ml-auto mt-4">
+                  {product.tags}
+                </div>
               </div>
-              <div className="flex justify-between mt-2 w-full">
+              <div className="hidden lg:flex justify-between  mt-2 w-full">
                 <button
                   onClick={() => handleEdit(product)}
                   className="text-blue-500 hover:text-blue-700"
                 >
-                  <FaEdit />
+                  <FaEdit size={20} />
                 </button>
                 <button
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => handleDelete(product)}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <FaTrashAlt />
+                  <FaTrashAlt size={20} />
                 </button>
               </div>
             </div>
           </div>
         ))}
-      </div>
+      </div> 
+        
+      )}
 
       {editingProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
+            <h2 className="text-2xl font-light mx-auto mb-4">Edit Product</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSave(editingProduct);
               }}
             >
-              <div className="mb-4">
+              <div className="mb-4 w-full">
                 <label className="block text-sm font-medium text-gray-700">
                   Title
                 </label>
                 <input
                   type="text"
-                  value={editingProduct.title}
+                  value={editingProduct.name}
                   onChange={(e) =>
                     setEditingProduct({
                       ...editingProduct,
-                      title: e.target.value,
+                      name: e.target.value,
                     })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="mt-1 block input w-full max-w-xs rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-4">
@@ -116,7 +190,7 @@ export default function ProductsTab() {
                   Price
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   value={editingProduct.price}
                   onChange={(e) =>
                     setEditingProduct({
@@ -124,34 +198,60 @@ export default function ProductsTab() {
                       price: e.target.value,
                     })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="mt-1 input max-w-xs block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Quantity
-                </label>
-                <input
-                  type="number"
-                  value={editingProduct.quantity}
+              <div className="mb-3 w-full">
+                <select
                   onChange={(e) =>
                     setEditingProduct({
                       ...editingProduct,
-                      quantity: parseInt(e.target.value),
+                      category: e.target.value,
                     })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
+                  required
+                  className="select select-bordered w-full max-w-xs"
+                >
+                  <option disabled selected>
+                    Choose Category
+                  </option>
+                  <option>Fashion</option>
+                  <option>Electronics</option>
+                  <option>Home Decor</option>
+                </select>
               </div>
+              <div className="mb-3 w-full">
+                <select
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      tags: e.target.value,
+                    })
+                  }
+                  required
+                  className="select select-bordered w-full max-w-xs"
+                >
+                  <option disabled selected>
+                    Choose Tags
+                  </option>
+                  <option>None</option>
+                  <option>Latest</option>
+                  <option>Top Deals</option>
+                </select>
+              </div>
+
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
-                  className="btn btn-ghost"
+                  className="btn rounded-sm btn-ghost"
                   onClick={() => setEditingProduct(null)}
                 >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn rounded-sm bg-red-500 text-white"
+                >
                   Save Changes
                 </button>
               </div>
@@ -160,9 +260,7 @@ export default function ProductsTab() {
         </div>
       )}
 
-      <button className="btn btn-circle btn-lg fixed bottom-8 right-8 bg-primary text-white">
-        <FaPlus size={24} />
-      </button>
+      <ToastContainer />
     </div>
   );
 }

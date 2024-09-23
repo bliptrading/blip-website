@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { collection,
    getFirestore, 
-   getDocs
+   getDocs,
+   where, 
+   query,
   } from "firebase/firestore";
 import {app} from '../../../utils/firebase'
 import { toast } from "react-toastify";
@@ -11,26 +13,32 @@ const db = getFirestore(app)
 function Orders() {
     const [productLists, setProducts] = useState([])
     const [isLoading, setLoading] = useState(true)
+    const [userOrdersList, setUserOrders] = useState([])
     useEffect(() => {
             const user = localStorage.getItem('user');
 
             const getComplexQuery = async () => {
                 if (user) {
                     const email = JSON.parse(user).user.email;
-                    const colRef = collection(db, "orders", email, "orders");
-                
+                    const colRef = collection(db, "orders");
+
+                    const q = query(
+                      collection(db, "orders"),
+                      where("email", "==", email)
+                    );
+
                 try {
-                    const docsSnap = await getDocs(colRef);
-                    const products = []; // Temporary array to hold fetched products
-
-                    docsSnap.forEach((doc) => {
-                        products.push(doc.data()); // Push each document's data into the array
-                    });
-
-                    setProducts(products); // Set the state with the fetched products
-                    setLoading(false)
+                  let allDocs = []
+                   const querySnapshot = await getDocs(q);
+                   querySnapshot.forEach((doc) => {
+                      allDocs.push(doc.data())
+                    setProducts(allDocs)
+                   });
+                    
                 } catch (error) {
                     toast.error("Error fetching documents: ");
+                }finally {
+                  setLoading(false)
                 }
             }
         };

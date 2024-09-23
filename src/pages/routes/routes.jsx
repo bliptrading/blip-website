@@ -6,7 +6,7 @@ import AdminPage from "../admin/AdminPage";
 import DashboardTab from "../admin/Tabs/DashboardTab";
 import Login from "../auth/LoginPage";
 import Register from "../auth/RegisterPage";
-import CustomersTab from "../admin/Tabs/CustomersTab";
+import CustomersTab from "../admin/Tabs/BlogTab";
 import OrdersTab from "../admin/Tabs/OrdersTab";
 import ProductsTab from "../admin/Tabs/ProductsTab";
 import ProfilePage from "../account/ProfilePage";
@@ -19,6 +19,8 @@ import { useLocation } from "react-router-dom";
 import AdminLogin from "../admin/AdminLogin";
 import AdminProtected from "./AdminProtected";
 import NotFound from "../../components/404/NotFound";
+import BlogsTab from "../admin/Tabs/BlogTab";
+import BlogDetailsPage from "../blog/BlogPage";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -42,6 +44,8 @@ function RoutesLayout() {
             <Route path=":category" element={<ProductList />} />
           </Route>
         </Route>
+        <Route path="blog/:slug" element={<BlogDetailsPage />} />
+
         <Route
           path="profile"
           element={
@@ -56,11 +60,11 @@ function RoutesLayout() {
           element={<AdminProtected state={true} element={<AdminPage />} />}
         >
           <Route path="dashboard" element={<DashboardTab />} />
-          <Route path="customers" element={<CustomersTab />} />
+          <Route path="blog" element={<BlogsTab />} />
           <Route path="orders" element={<OrdersTab />} />
           <Route path="products" element={<ProductsTab />} />
         </Route>
-
+          
         <Route path="/cart" element={<Cart />} />
         <Route path="/accounts/login" element={<Login />} />
         <Route path="/accounts/signup" element={<Register />} />

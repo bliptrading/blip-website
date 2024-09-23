@@ -4,6 +4,7 @@ import { FiTwitter, FiPhoneCall } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
 import logo from '../../assets/logo.jpeg'
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -41,9 +42,8 @@ const Footer = () => {
       <div>
         <h1 className=" text-lg  font-medium roboto-thin ">Company</h1>
         <ul className="space-y-5 mt-4 font-light  cursor-pointer">
-          <li>About Us</li>
-          <li>Services</li>
-          <li>Blog</li>
+          <li className="mb-2">About Us</li>
+          <Link className="my-2" to={'/blog'}>Blog</Link>
           <li>Contact</li>
         </ul>
       </div>

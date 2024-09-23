@@ -12,9 +12,12 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { LuPackage2 } from "react-icons/lu";
 import { GiClothes } from "react-icons/gi";
 import { PiBuildingApartmentLight } from "react-icons/pi";
+import { GoHomeFill } from "react-icons/go";
+import { BsBasket2 } from "react-icons/bs";
 import logo from '../../assets/logo.jpeg'
 import { signOut, getAuth } from "firebase/auth";
 import { app } from "../../utils/firebase";
+import { BsHandbag } from "react-icons/bs";
 
 const Header = () => {
   const [nav, setNav] = useState(false);
@@ -221,21 +224,55 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
-                      <Link to="/" className="flex items-center">
-                        <IoBasketOutline size={30} className="mr-1" /> Dashboard
-                      </Link>
-                    </li>
-                    <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
-                      <Link to="/" className="flex items-center">
-                        <IoBasketOutline size={30} className="mr-1" /> Orders
-                      </Link>
-                    </li>
-                    <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
-                      <Link to="/" className="flex items-center">
-                        <IoBasketOutline size={30} className="mr-1" /> Products
-                      </Link>
-                    </li>
+                    {loc.pathname.split("/")[1] !== "admin" ? (
+                      <>
+                        <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                          <Link to="/" className="flex items-center">
+                            <IoBasketOutline size={30} className="mr-1" />{" "}
+                            Dashboard
+                          </Link>
+                        </li>
+                        <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                          <Link to="/" className="flex items-center">
+                            <IoBasketOutline size={30} className="mr-1" />{" "}
+                            Orders
+                          </Link>
+                        </li>
+                        <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                          <Link to="/" className="flex items-center">
+                            <IoBasketOutline size={30} className="mr-1" />{" "}
+                            Products
+                          </Link>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                          <Link
+                            to="/admin/dashboard"
+                            className="flex font-light items-center"
+                          >
+                            <GoHomeFill size={25} className="mr-1" /> Dashboard
+                          </Link>
+                        </li>
+                        <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                          <Link
+                            to="/admin/orders"
+                            className="flex font-light items-center"
+                          >
+                            <BsBasket2 size={25} className="mr-1" /> Orders
+                          </Link>
+                        </li>
+                        <li className="flex items-center  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                          <Link
+                            to="/admin/products"
+                            className="flex font-light items-center"
+                          >
+                            <BsHandbag size={25} className="mr-1" /> Products
+                          </Link>
+                        </li>
+                      </>
+                    )}
                   </>
                 )}
 

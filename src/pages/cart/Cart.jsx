@@ -83,7 +83,7 @@ const Cart = () => {
     }
 
     try {
-      await addDoc(collection(db, "orders", json_user.user.email, "orders"), {
+      await addDoc(collection(db, "orders"), {
         orderId: crypto.randomUUID().slice(0, 8).toUpperCase(),
         number: data.phone,
         fullname: data.fullName,

@@ -5,7 +5,7 @@ function ProtectedRoute({ state, element }) {
   if (state) {
     return <>{element};</>;
   }
-  return <Navigate to="/accounts/login"  />;
+  return <Navigate to={-1}  />;
 }
 
 export default ProtectedRoute;

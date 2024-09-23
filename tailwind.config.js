@@ -8,6 +8,8 @@ module.exports = {
           "url('https://img.freepik.com/free-photo/present-toy-shopping-cart_23-2148015372.jpg?t=st=1726594818~exp=1726598418~hmac=8a1a78577f46bac7a0417830d9a63074c5fdd4e01b69aad250ce88a84931f745&w=740')",
         "banner-image":
           "url('https://img.freepik.com/free-photo/present-toy-shopping-cart_23-2148015372.jpg?t=st=1726594818~exp=1726598418~hmac=8a1a78577f46bac7a0417830d9a63074c5fdd4e01b69aad250ce88a84931f745&w=740')",
+
+          "section-image":"url('./assets/you2.png')"
       },
       height: {
         "80vh": "80vh",

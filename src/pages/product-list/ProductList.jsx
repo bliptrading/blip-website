@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/product-card/ProductCard";
 import NotFound from "../../components/404/NotFound";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -63,7 +63,7 @@ const product = [
   },
   {
     title: "Kellogg's Corn Flakes 300g Box (Kellogg's)",
-    category: "grocery",
+    category: "home-decor",
     quantity: 1,
     price: "6",
     image:
@@ -162,7 +162,11 @@ function ProductList() {
       <div className="breadcrumbs text-sm mx-4">
         <ul>
           <li>
-            <a>Home</a>
+            <a>
+              <Link to={'/'}>
+                Home
+              </Link>
+              </a>
           </li>
           <li>
             <a>{pathList[1]}</a>
