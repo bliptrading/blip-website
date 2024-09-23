@@ -116,7 +116,7 @@ const Header = () => {
           </div>
           <div className="flex">
             {!isLoggedIn ? (
-              <Link to="/admin/dashboard">
+              <Link to="/accounts/login">
                 <div className="flex p-2 rounded-sm  w-50 items-center bg-red-500 mx-2">
                   {/* <AiOutlineUser size={20} /> */}
                   <h1 className=" ">SIGN IN</h1>
