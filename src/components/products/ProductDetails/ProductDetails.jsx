@@ -2,10 +2,41 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProductCard from "../../product-card/ProductCard";
 import { product } from "../Products";
 import { Link, useLocation } from "react-router-dom";
+import { LiaStarSolid } from "react-icons/lia";
+
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { app } from "../../../utils/firebase";
+
+const db = getFirestore(app)
+
 function ProductDetails() {
     
     const loc = useLocation()
     const itemPath = loc.pathname.split('/')[1]
+    const [allProducts, setAllProducts] = useState([])
+    const [isLoading, setLoading] = useState([])
+
+   useEffect(() => {
+     const fetchData = async () => {
+       setLoading(true);
+       try {
+         let allDocs = [];
+         const querySnapShot = await getDocs(collection(db, "products"));
+         querySnapShot.forEach((doc) => {
+           allDocs.push(doc.data());
+         });
+          console.log(allDocs)
+         setAllProducts(allDocs);
+
+       } catch (err) {
+       } finally {
+         setLoading(false);
+       }
+     };
+     fetchData();
+   }, []);
 
     
   return (
@@ -15,41 +46,42 @@ function ProductDetails() {
         <div className="max-w-7xl mx-auto px-4">
           <nav className="text-sm text-gray-600">
             <ul className="flex space-x-2">
+              <Link to="/" className="hover:text-gray-800">
+                Home
+              </Link>
 
-                <Link to="/" className="hover:text-gray-800">
-                  Home
-                </Link>
-              
               <li>/</li>
-              <Link to='/' className="text-gray-800">{itemPath}</Link>
+              <Link to="/" className="text-gray-800">
+                {itemPath}
+              </Link>
             </ul>
           </nav>
         </div>
       </div>
 
       {/* Product Content Section */}
-      <div className="py-10">
+      <div className="py-10 lg:mx-40  my-4  ">
         <div className="max-w-7xl mx-auto px-4">
           <div className="md:flex md:space-x-6">
             {/* Prduct Image */}
             <div className="md:w-1/3">
               <img
-                src="https://via.placeholder.com/600"
+                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
                 alt="Blog Post"
                 className="rounded-lg shadow-lg w-full h-auto"
               />
             </div>
 
             {/* Product Details */}
-            <div className="md:w-2/3">
-              <h1 className="text-2xl mt-10 lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
-                Blog Title
+            <div className="md:w-2/3 ">
+              <h1 className="text-2xl m mt-10 lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
+                Nike 3d AMBER GREEN
               </h1>
               <span>Price</span>
               <h1 className="text-xl mt-4  lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
                 GHC 50.00
               </h1>
-              <div className="flex flex-col space-x-4 text-gray-600 mb-6">
+              <div className="flex flex-col space-x-4  text-gray-600 mb-6">
                 <span>
                   <span className="font-extrabold">Description</span>
                   <p>
@@ -82,6 +114,48 @@ function ProductDetails() {
           </div>
         </div>
       </div>
+      {/*Reviews Section*/}
+
+      <section className="lg:mx-12 rounded-md   bg-white  shadow-sm mx-1">
+        <div className="card p-4 ">
+          <div className="w-full flex">
+            <span className="mt-2 lg:text-xl font-light lg:mx-2">
+              CUSTOMER REVIEWS AND FEEDBACK
+            </span>
+            <Link
+              className="font-light  link-hover ml-auto flex"
+              to={"reviews"}
+            >
+              <span className="mt-2 w-full  text-red-400">SEE ALL</span>
+              <MdOutlineKeyboardArrowRight className="text-red-400" size={40} />
+            </Link>
+          </div>
+          <hr></hr>
+          <div className="w-full my-2">
+            <div className="w-full flex p-1">
+              <LiaStarSolid className="text-red-400" size={20} />
+              <LiaStarSolid className="text-red-400" size={20} />
+              <LiaStarSolid size={20} />
+              <LiaStarSolid size={20} />
+              <LiaStarSolid size={20} />
+
+              <span className="text-sm ml-auto font-thin">
+                {new Date().toLocaleDateString()}
+              </span>
+            </div>
+            <div className="w-full">
+              <h1 className="font-light text-base">
+                This is an excellent product
+              </h1>
+              <span className="font-light text-gray-400 text-base">
+                By James Aurthur
+              </span>
+              <hr></hr>
+            </div>
+          </div>
+          
+        </div>
+      </section>
       <section className="lg:mx-12 mx-1">
         <h1 className="text-white lg:mx-12 my-12 bg-red-500 p-2 text-center font-medium text-2xl">
           Similar Items

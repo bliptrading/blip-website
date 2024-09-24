@@ -5,11 +5,11 @@ import { IoBagAddSharp } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { LuEye } from "react-icons/lu";
-import { getFirestore, collection, getDocs, orderBy, query, limit, count } from "firebase/firestore";
-import { getStorage,uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import { getFirestore, collection,addDoc ,getDocs, orderBy, query, limit, count } from "firebase/firestore";
+import { getStorage,uploadBytes , getDownloadURL, ref } from "firebase/storage";
 import {app} from '../../../utils/firebase'
 import { ToastContainer, toast} from "react-toastify";
-
+import { generateSlug } from "../../../utils/helpers";
 
 const db = getFirestore(app)
 const storage = getStorage(app)
@@ -110,10 +110,12 @@ useEffect(() => {
         name:data.name, 
         price:data.price, 
         description: data.description, 
-        category: data.category,
+        category: `${data.category}`.toLowerCase(),
         tags: data.tags,
         imageUrl: filePathOnCloud,
-        pathRef: pathname
+        pathRef: pathname,
+        slug:generateSlug(data.name+ " " +data.tags+ " " +data.category ),
+        reviews:[]
        }
        await addDoc(collection(db, "products"), productData);
 

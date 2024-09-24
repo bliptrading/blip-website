@@ -22,6 +22,7 @@ import NotFound from "../../components/404/NotFound";
 import BlogsTab from "../admin/Tabs/BlogTab";
 import BlogDetailsPage from "../blog/BlogPage";
 import ProductDetails from "../../components/products/ProductDetails/ProductDetails";
+import ReviewsPage from "../../components/products/Reviews/ReviewsPage";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -31,17 +32,18 @@ function RoutesLayout() {
     const user = localStorage.getItem("user");
     if (user) {
       const parsedUser = JSON.parse(user);
-      setAuthenticated(!!parsedUser.user.email); // Set true if email exists
+      setAuthenticated(!!parsedUser.user.email); 
     } else {
-      setAuthenticated(false); // User not found
+      setAuthenticated(false);
     }
-  }, [loc.pathname]); // Run effect on location change
+  }, [loc.pathname]); 
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />}>
           <Route path=":slug" element={<ProductDetails />} />
+          <Route path=":slug/reviews" element={<ReviewsPage />} />
           <Route path="category/" element={<ProductList />}>
             <Route path=":category" element={<ProductList />} />
           </Route>

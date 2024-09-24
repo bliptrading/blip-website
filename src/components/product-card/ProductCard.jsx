@@ -18,7 +18,7 @@ const ProductCard = ({ products }) => {
       {products.map((product) => (
         <div
           key={product.id}
-          className="rounded-sm transition-all hover:scale-110 duration-150 hover:cursor-pointer my-4 lg:my-1 lg:p-4 shadow-md lg:w-[240px] max-w-full lg:max-w-[250px]  "
+          className="rounded-sm bg-white transition-all hover:scale-110 duration-150 hover:cursor-pointer my-4 lg:my-1 lg:p-4 shadow-md lg:w-[240px] max-w-full lg:max-w-[250px]  "
         >
           <Link to={'/products'}>
             <img

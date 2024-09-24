@@ -6,6 +6,7 @@ import { getStorage, ref, uploadBytes , getDownloadURL, deleteObject } from "fir
 import { getFirestore,addDoc,getDocs, collection } from "firebase/firestore";
 import { app } from "../../../utils/firebase";
 import { ToastContainer, toast } from "react-toastify";
+import { generateSlug } from "../../../utils/helpers";
 
 const db = getFirestore(app);
 const storage = getStorage(app);
@@ -16,15 +17,7 @@ function BlogsTab() {
   const [isLoading, setLoading] = useState(false)
 
 
-  function generateSlug(title) {
-    return title
-      .toLowerCase() // Convert to lowercase
-      .trim() // Remove whitespace from both ends
-      .replace(/[\s]+/g, "-") // Replace spaces with hyphens
-      .replace(/[^\w\-]+/g, "") // Remove all non-word characters except hyphens
-      .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
-      .replace(/^-+|-+$/g, ""); // Remove leading and trailing hyphens
-  }
+  
 
   const handleCreatePost = async (data) => {
     // console.log(data);

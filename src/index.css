@@ -7,8 +7,15 @@
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; 
+   background-color: #f7f6f6;
+   font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: "100";
+  font-style: normal;
+   
 }
+
 
 
 
