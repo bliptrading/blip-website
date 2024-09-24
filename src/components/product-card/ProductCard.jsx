@@ -1,6 +1,7 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import Store from "../../store/Store";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ products }) => {
   const { cartArray, addToCart, removeFromCart } = Store();
@@ -19,11 +20,13 @@ const ProductCard = ({ products }) => {
           key={product.id}
           className="rounded-sm transition-all hover:scale-110 duration-150 hover:cursor-pointer my-4 lg:my-1 lg:p-4 shadow-md lg:w-[240px] max-w-full lg:max-w-[250px]  "
         >
-          <img
-            src={product.image}
-            alt="product"
-            className="w-32 mx-auto rounded-lg h-28"
-          />
+          <Link to={'/products'}>
+            <img
+              src={product.image}
+              alt="product"
+              className="w-32 mx-auto rounded-lg h-28"
+            />
+          </Link>
           <div className="space-y-1 text-center pt-1 p-4">
             <h3 className="text-md md:my-2 lg:my-2 rubik-text font-normal first-letter:uppercase h-auto">
               {product.title}

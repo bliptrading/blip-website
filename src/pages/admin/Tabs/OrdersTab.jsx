@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaFileExport, FaSort } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import  {app} from '../../../utils/firebase';
-import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { getFirestore, getDocs, collection, serverTimestamp } from "firebase/firestore";
 import { LuEye } from "react-icons/lu";
 
 const orderData = [
@@ -32,7 +32,7 @@ function OrdersTab() {
        querySnapShot.forEach((doc)=> {
         allDocs.push(doc.data())
        })
-       console.log(allDocs)
+      //  console.log(allDocs)
        setOrderList(allDocs)
       }catch(err) {
 
@@ -42,6 +42,8 @@ function OrdersTab() {
     }
     fetchData()
   }, [])
+
+  
 
   return (
     <div className="w-full p-4 h-full">

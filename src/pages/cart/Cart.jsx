@@ -5,7 +5,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
 import { usePaystackPayment } from "react-paystack";
 import { toast, ToastContainer } from "react-toastify";
-import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { getFirestore, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { app } from "../../utils/firebase";
 
 const db = getFirestore(app);
@@ -13,6 +13,7 @@ const db = getFirestore(app);
 const Cart = () => {
   const { cartArray, removeFromCart, clearCart } = Store();
   const [cart, setCart] = useState(cartArray);
+  const [isLoading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -74,6 +75,7 @@ const Cart = () => {
   }, [cartArray]);
 
   const handlePayment = async (data) => {
+    setLoading(true)
     const user_data = localStorage.getItem("user");
     let json_user = JSON.parse(user_data);
 
@@ -88,16 +90,19 @@ const Cart = () => {
         number: data.phone,
         fullname: data.fullName,
         items: [...cartArray],
-        amount: billings.total,
+        amount: billings.total + billings.tax + billings.shipping - billings.discount,
         email: json_user.user.email,
         date: new Date().toLocaleString(),
+        timestamp: serverTimestamp(),
       });
       clearCart();
-      toast.success("Cart Emptied");
+      
       toast.success("Order Completed");
     } catch (error) {
       console.error("Error adding document: ", error);
       toast.error("Order Failed");
+    }finally {
+      setLoading(false)
     }
   };
 
@@ -267,7 +272,12 @@ const Cart = () => {
                 type="submit"
                 className="w-full p-3 text-white text-lg font-light bg-red-500 rounded-md"
               >
-                Checkout
+                {isLoading ? (
+                  <span className="loading loading-spinner loading-lg text-error"></span>
+                ) : (
+                  "Checkout"
+                )}
+                
               </button>
             </form>
           </section>

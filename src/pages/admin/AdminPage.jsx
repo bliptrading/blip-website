@@ -6,15 +6,42 @@ import { IoArrowBack } from "react-icons/io5";
 import { IoNewspaperOutline } from "react-icons/io5";
 
 function AdminPage() {
+  const navigate = useNavigate();
+  const loc = useLocation();
 
-  const navigate = useNavigate()
-  const loc = useLocation()
   const goBack = () => {
-    if(loc.pathname.split('/')[2] !== 'dashboard') {
-      navigate(-1)
+    if (loc.pathname.split("/")[2] !== "dashboard") {
+      navigate(-1);
     }
+  };
 
-  }
+  const navLinks = [
+    {
+      id: 1,
+      to: "dashboard",
+      icon: <RiHome6Line className="" color="white" size={30} />,
+      label: "Dashboard",
+    },
+    {
+      id: 2,
+      to: "orders",
+      icon: <CgNotes className="" color="white" size={30} />,
+      label: "Orders",
+    },
+    {
+      id: 3,
+      to: "products",
+      icon: <HiOutlineShoppingBag className="" color="white" size={30} />,
+      label: "Products",
+    },
+    {
+      id: 4,
+      to: "blog",
+      icon: <IoNewspaperOutline className="" color="white" size={30} />,
+      label: "Blogs",
+    },
+  ];
+
   return (
     <>
       {/* Main Content Area */}
@@ -30,51 +57,29 @@ function AdminPage() {
           </div>
 
           {/* Sidebar Menu */}
-          <div className="drawer-side ">
+          <div className="drawer-side">
             <label
               htmlFor="my-drawer-2"
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <ul className="menu  bg-black font-light text-base text-white min-h-full w-80 p-4">
-              <NavLink
-                to={"dashboard"}
-                className={({ isActive }) => `flex flex-row mb-2 hover:bg-red-500 p-3
-                  ${isActive ? "bg-red-500": ''}
-                `}
-              >
-                <RiHome6Line className="" color="white" size={30} />
-                <a className="mt-1 mx-2 roboto-thin text-lg font-medium ">
-                  Dashboard
-                </a>
-              </NavLink>
-              <NavLink
-              to={'orders'}
-                className={({ isActive }) => `flex flex-row my-2 hover:bg-red-500 p-3
-                    ${isActive ? 'bg-red-500': null}
-                `}
-              > 
-                <CgNotes className="" color="white" size={30} />
-                <a className="mx-2">Orders</a>
-              </NavLink>
-              <NavLink
-                to={"products"}
-                className={({ isActive }) => `flex flex-row my-2 hover:bg-red-500 p-3
-                  ${isActive ?  "bg-red-500": ''}
-                `}
-              >
-                <HiOutlineShoppingBag className="" color="white" size={30} />
-                <a className="mt-1 mx-2">Products</a>
-              </NavLink>
-              <NavLink
-                to={"blog"}
-                className={({ isActive }) => `flex flex-row my-2 hover:bg-red-500 p-3
-                  ${isActive ? "bg-red-500": ''}
-                `}
-              >
-                <IoNewspaperOutline className="" color="white" size={30} />
-                <a className="mt-1 mx-2">Blog</a>
-              </NavLink>
+            <ul className="menu bg-black font-light text-base text-white min-h-full w-80 p-4">
+              {navLinks.map(({ id, to, icon, label }) => (
+                <NavLink
+                  key={id}
+                  to={to}
+                  className={({ isActive }) =>
+                    `flex flex-row my-2 hover:bg-red-500 p-3 ${
+                      isActive ? "bg-red-500" : ""
+                    }`
+                  }
+                >
+                  {icon}
+                  <span className="mt-1 mx-2 roboto-thin text-lg font-medium">
+                    {label}
+                  </span>
+                </NavLink>
+              ))}
             </ul>
           </div>
         </div>

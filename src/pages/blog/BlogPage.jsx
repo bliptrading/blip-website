@@ -1,6 +1,47 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+import { app } from "../../utils/firebase";
+import { getFirestore, query, where, getDocs, collection } from "firebase/firestore";
+import { ToastContainer, toast } from "react-toastify";
+import ReactMarkdown from "react-markdown";
+
+const db = getFirestore(app)
 
 function BlogDetailsPage() {
+   const [isLoading, setLoading] = useState(false)
+   const loc = useLocation()
+   let slug = loc.pathname.split('/')[2]
+    const [currentBlog, setCurrentBlog] = useState([])
+
+
+   useEffect(() => {
+
+     const getComplexQuery = async () => {
+       
+         const q = query(collection(db, "blogs"), where("slug", "==", slug));
+         try {
+           let allDocs = [];
+           const querySnapshot = await getDocs(q);
+           querySnapshot.forEach((doc) => {
+             allDocs.push(doc.data());
+             
+             setCurrentBlog(allDocs[0]);
+           });
+           console.log(currentBlog)
+         } catch (error) {
+           toast.error("Error fetching documents: ");
+         } finally {
+           setLoading(false);
+         }
+       
+     };
+
+     getComplexQuery();
+   }, []);
+
+
+
   return (
     <>
       {/* Breadcrumb Section */}
@@ -32,39 +73,36 @@ function BlogDetailsPage() {
           <div className="md:flex md:space-x-6">
             {/* Blog Image */}
             <div className="md:w-1/3">
-              <img
-                src="https://via.placeholder.com/600"
-                alt="Blog Post"
-                className="rounded-lg shadow-lg w-full h-auto"
-              />
+              {currentBlog.mediaUrl ? (
+                <video
+                  controls
+                  src={currentBlog.mediaUrl}
+                  alt="Blog Post"
+                  className="rounded-lg shadow-lg w-full h-auto"
+                />
+              ) : (
+                <img
+                  src={currentBlog.bannerImage}
+                  alt="Blog Post"
+                  className="rounded-lg shadow-lg w-full h-auto"
+                />
+              )}
             </div>
 
             {/* Blog Details */}
             <div className="md:w-2/3">
               <h1 className="text-3xl roboto-thin font-medium text-gray-900 mb-4">
-                Blog Title
+                {currentBlog.title}
               </h1>
               <div className="flex items-center space-x-4 text-gray-600 mb-6">
-                <span>Author Name</span>
+                <span>Admin</span>
                 <span>|</span>
-                <span>Published Date: September 23, 2024</span>
+                <span>Published Date: {currentBlog.date}</span>
               </div>
 
               {/* Blog Content */}
               <div className="text-lg font-light text-gray-700 space-y-4 leading-relaxed">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-                <p>
-                  Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                  aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur.
-                </p>
-                <p>
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                  qui officia deserunt mollit anim id est laborum.
-                </p>
+                <ReactMarkdown children={`${currentBlog.data}`} />
               </div>
             </div>
           </div>
@@ -95,6 +133,7 @@ function BlogDetailsPage() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

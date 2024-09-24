@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 
 
-function ProtectedRoute({ state, element }) {
+function ProtectedRoute({ state, element, path }) {
   if (state) {
     return <>{element};</>;
   }
-  return <Navigate to={-1}  />;
+  return <Navigate to={path}  />;
 }
 
 export default ProtectedRoute;

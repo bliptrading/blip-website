@@ -3,9 +3,9 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { IoBagAddSharp } from "react-icons/io5";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-
-import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { LuEye } from "react-icons/lu";
+import { getFirestore, collection, getDocs, orderBy, query, limit, count } from "firebase/firestore";
 import { getStorage,uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import {app} from '../../../utils/firebase'
 import { ToastContainer, toast} from "react-toastify";
@@ -16,7 +16,9 @@ const storage = getStorage(app)
 
 function DashboardTab() {
   const [seletectedImage, setSelectedImage] = useState('')
+  const [totalProducts, setTotalProucts] = useState(0) 
   const [imagePreview, setImagePreview] = useState(null);
+  const [orderList, setOrderList] = useState([]);
 
   const [isLoading, setLoading]  = useState(false)
   const {
@@ -25,6 +27,61 @@ function DashboardTab() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+ useEffect(() => {
+   const fetchData = async () => {
+     setLoading(true);
+     try {
+       const ordersQuery = query(
+         collection(db, "orders"),
+         orderBy("timestamp", 'desc'), // Order by the 'timestamp' field
+        
+       );
+
+       const querySnapshot = await getDocs(ordersQuery);
+
+       let allDocs = [];
+       querySnapshot.forEach((doc) => {
+         allDocs.push(doc.data());
+       });
+
+       setOrderList(allDocs.slice(0,4));
+     } catch (err) {
+       toast.error(err);
+     } finally {
+       setLoading(false);
+     }
+   };
+
+   fetchData();
+
+    }, []);
+
+    
+useEffect(() => {
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Query Firestore collection and limit to 4 documents
+      const ordersQuery = query(
+        collection(db, "products"),
+      );
+
+      const querySnapshot = await getDocs(ordersQuery);
+      // Get the count of documents returned
+      const count = querySnapshot.size;
+      setTotalProucts(count)
+       // Set state with the fetched documents
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }}
+    fetchData()
+  }
+
+,[])
+ 
 
    const handleUploadProduct = async (data) => {
      // Check if an image is selected
@@ -117,19 +174,15 @@ function DashboardTab() {
                     className="input text-md mt-2 input-bordered w-full"
                   />
                 </div>
-                <div className="mb-3 w-full">
-                  <select
-                    {...register("category")}
+                <div className="mb-4 w-full ">
+                  <label htmlFor="my-5">Add Category</label>
+                  <input
                     required
-                    className="select select-bordered w-full max-w-xs"
-                  >
-                    <option disabled selected>
-                      Choose Category
-                    </option>
-                    <option>Fashion</option>
-                    <option>Electronics</option>
-                    <option>Home Decor</option>
-                  </select>
+                    {...register("category")}
+                    type="text"
+                    placeholder="New Category eg (electronics, home-decor)"
+                    className="input text-md max-w-sm mt-2 input-bordered w-full"
+                  />
                 </div>
 
                 <div className="mb-3 w-full">
@@ -141,12 +194,13 @@ function DashboardTab() {
                     <option disabled selected>
                       Choose Tags
                     </option>
-                    <option>None</option>
+                    <option>Discount</option>
                     <option>Latest</option>
                     <option>Top Deals</option>
+                    <option>None</option>
                   </select>
                 </div>
-                
+
                 <div className="mb-4 w-full ">
                   <input
                     {...register("image")}
@@ -176,11 +230,11 @@ function DashboardTab() {
                   type="submit"
                   className="btn font-light text-lg text-white bg-red-500 rounded-md"
                 >
-                {isLoading ?
-                  <span className="loading loading-spinner loading-lg text-error"></span>:
-                 `Save` 
-                 }
-
+                  {isLoading ? (
+                    <span className="loading loading-spinner loading-lg text-error"></span>
+                  ) : (
+                    `Save`
+                  )}
                 </button>
               </form>
             </div>
@@ -205,29 +259,22 @@ function DashboardTab() {
         </div>
       </dialog>
 
-      <div className="w-full my-4 flex-col lg:flex-row items-center space-y-3   flex justify-center ">
-        <div className="card bg-gradient-to-tr mx-4 from-[#382828] to-[#f0413b] text-white w-96">
-          <div className="card-body">
-            <h2 className="card-title text-2xl font-light mx-auto">
-              Total Sales
-            </h2>
-            <PiMoney className="mx-auto" size={50} />
-          </div>
-        </div>
-        <div className="card bg-gradient-to-tr mx-4 from-[#382828] to-[#f0413b] text-white w-96">
+      <div className="w-full mt-10 flex-col lg:flex-row items-center space-x-10   flex justify-center ">
+        <div className="card bg-gradient-to-tr  from-[#382828] to-[#f0413b] text-white w-96">
           <div className="card-body">
             <h2 className="card-title mx-auto font-light text-2xl">Orders</h2>
             <MdOutlinePendingActions className="mx-auto" size={40} />
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-            <div className="card-actions justify-end"></div>
+            <h4 className="font-medium text-3xl text-center">{orderList.length}</h4>
           </div>
         </div>
-        <div className="card bg-gradient-to-tr mx-4 from-[#382828] to-[#f0413b] text-white w-96">
+        <div
+          className="m-2 bg-gradient-to-tr
+          from-[#382828] to-[#f0413b] text-white w-96"
+        >
           <div className="card-body">
             <h2 className="card-title mx-auto font-light text-2xl">Products</h2>
             <MdOutlinePendingActions className="mx-auto" size={40} />
-            <p>If a dog chews shoes whose shoes does he choose?</p>
-            <div className="card-actions justify-end"></div>
+            <h4 className="font-medium text-3xl text-center">{totalProducts}</h4>
           </div>
         </div>
       </div>
@@ -236,48 +283,47 @@ function DashboardTab() {
         <h1 className="text-xl text-center lg:font-light font-thin mb-6">
           Recent Orders
         </h1>
-        <div className="overflow-x-auto overflow-y-auto max-h-52">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th></th>
-                <th>Email</th>
-                <th>Product</th>
-                <th>Price (GHS) </th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* row 1 */}
-              <tr>
-                <th>1</th>
-                <td>Cy Ganderton</td>
-                <td>Quality Control Specialist</td>
-                <td>Blue</td>
-              </tr>
-              {/* row 2 */}
-              <tr className="hover">
-                <th>2</th>
-                <td>Hart Hagerty</td>
-                <td>Desktop Support Technician</td>
-                <td>Purple</td>
-              </tr>
-              {/* row 3 */}
-              <tr>
-                <th>3</th>
-                <td>Brice Swyre</td>
-                <td>Tax Accountant</td>
-                <td>Red</td>
-              </tr>
-              <tr>
-                <th>4</th>
-                <td>Brice Swyre</td>
-                <td>Tax Accountant</td>
-                <td>50</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        {isLoading ? (
+          <div className="w-full flex flex-col space-y-2">
+            <div className="skeleton rounded-md h-12 w-full"></div>
+            <div className="skeleton rounded-md h-12 w-full"></div>
+            <div className="skeleton rounded-md h-12 w-full"></div>
+          </div>
+        ) : (
+          <div className="overflow-x-scroll overflow-y-scroll max-h-48 ">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Date</th>
+                  <th>No of Items</th>
+                  <th>Amount (GHS)</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orderList.map((order) => (
+                  <tr>
+                    <th>{order.orderId}</th>
+                    <td>{order.fullname}</td>
+                    <td>{order.email}</td>
+                    <th>{order.number}</th>
+                    <td>{order.date}</td>
+                    <td>{order.items?.length}</td>
+                    <td>{order.amount}</td>
+                    <td className="btn m-2">
+                      <LuEye size={20} className="text-red-500"></LuEye>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
       <ToastContainer />
     </div>

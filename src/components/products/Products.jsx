@@ -6,7 +6,7 @@ import BlogSection from "../blog-section/BlogSection";
 import Banner from "../banner/Banner";
 
 
-const product = [
+export const product = [
   {
     title: "Amazon Echo (3rd generation)",
     category: "appliances",

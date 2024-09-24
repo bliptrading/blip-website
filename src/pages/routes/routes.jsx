@@ -21,6 +21,7 @@ import AdminProtected from "./AdminProtected";
 import NotFound from "../../components/404/NotFound";
 import BlogsTab from "../admin/Tabs/BlogTab";
 import BlogDetailsPage from "../blog/BlogPage";
+import ProductDetails from "../../components/products/ProductDetails/ProductDetails";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -40,6 +41,7 @@ function RoutesLayout() {
     <>
       <Routes>
         <Route path="/" element={<Home />}>
+          <Route path=":slug" element={<ProductDetails />} />
           <Route path="category/" element={<ProductList />}>
             <Route path=":category" element={<ProductList />} />
           </Route>
@@ -49,7 +51,7 @@ function RoutesLayout() {
         <Route
           path="profile"
           element={
-            <ProtectedRoute state={isAuthenticated} element={<ProfilePage />} />
+            <ProtectedRoute state={isAuthenticated} path={-1} element={<ProfilePage />} />
           }
         >
           <Route path="settings" element={<AccountPage />} />

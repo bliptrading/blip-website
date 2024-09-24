@@ -61,6 +61,14 @@ const Header = () => {
     localStorage.removeItem("user");
     navigate("/");
   };
+
+  const linkItems = [
+    { id: 1, to: "/", label: "All" },
+    { id: 2, to: "/category/fashion", label: "Fashion" },
+    { id: 3, to: "/category/home-decor", label: "Home Decor" },
+    { id: 4, to: "/category/electronics", label: "Electronics" },
+  ];
+
   return (
     <>
       <nav className="">
@@ -69,12 +77,9 @@ const Header = () => {
             <div className="lg:w-14 rounded-full">
               <img className="" alt="blip logo" src={logo} />
             </div>
-            <h1>
+            <h1 className="mt-3 mx-4 roboto-thin text-3xl font-bold text-red-500">
               {/* <span className="text-2xl ml-1 roboto-thin font-bold text-red-500"> */}
-              <span className="oleo-logo text-red-500 mx-2">Blip</span>
-              <span className="mt-3 roboto-thin text-xl font-bold text-red-500">
-                Trading
-              </span>{" "}
+              Blip Trading
               {/* </span> */}
             </h1>
           </Link>
@@ -87,18 +92,11 @@ const Header = () => {
                 tabIndex={0}
                 className="dropdown-content bg-base-100 text-black menu rounded-sm z-[1] w-52 p-2 shadow"
               >
-                <Link className="mx-4 my-2" to={"/"}>
-                  <a>All</a>
-                </Link>
-                <Link className="mx-4 my-2" to={"/category/fashion"}>
-                  <a>Fashion</a>
-                </Link>
-                <Link className="mx-4 my-2" to={"/category/home-decor"}>
-                  <a>Home Decor</a>
-                </Link>
-                <Link className="mx-4 my-2" to={"/category/electronics"}>
-                  <a>Electronics</a>
-                </Link>
+                {linkItems.map(({ id, to, label }) => (
+                  <Link key={id} className="mx-4 my-2" to={to}>
+                    {label}
+                  </Link>
+                ))}
               </ul>
             </div>
             <input
