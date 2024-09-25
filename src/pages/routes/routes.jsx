@@ -26,13 +26,24 @@ import ReviewsPage from "../../components/products/Reviews/ReviewsPage";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isAdminAuthenticated, setAdminAuth] = useState(false)
   const loc = useLocation();
+
+  useEffect(()=> {
+      const admin = localStorage.getItem("admin");
+      if (admin) {
+        const parsedAdmin = JSON.parse(admin);
+        setAdminAuth(!!parsedAdmin.user.email);
+      } else {
+        setAdminAuth(false);
+      }
+  }, [loc.pathname])
 
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       const parsedUser = JSON.parse(user);
-      setAuthenticated(!!parsedUser.user.email); 
+      setAuthenticated(!!parsedUser.email); 
     } else {
       setAuthenticated(false);
     }
@@ -61,7 +72,7 @@ function RoutesLayout() {
         </Route>
         <Route
           path="/admin"
-          element={<AdminProtected state={true} element={<AdminPage />} />}
+          element={<AdminProtected state={isAdminAuthenticated} element={<AdminPage />} />}
         >
           <Route path="dashboard" element={<DashboardTab />} />
           <Route path="blog" element={<BlogsTab />} />

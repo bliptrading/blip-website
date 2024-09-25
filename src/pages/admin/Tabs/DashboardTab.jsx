@@ -115,7 +115,8 @@ useEffect(() => {
         imageUrl: filePathOnCloud,
         pathRef: pathname,
         slug:generateSlug(data.name+ " " +data.tags+ " " +data.category ),
-        reviews:[]
+        reviews:[],
+        quantity:1
        }
        await addDoc(collection(db, "products"), productData);
 
@@ -262,7 +263,7 @@ useEffect(() => {
       </dialog>
 
       <div className="w-full mt-10 flex-col lg:flex-row items-center space-x-10   flex justify-center ">
-        <div className="card bg-gradient-to-tr  from-[#382828] to-[#f0413b] text-white w-96">
+        <div className="rounded-md bg-gradient-to-tr  from-[#382828] to-[#f0413b] text-white w-96">
           <div className="card-body">
             <h2 className="card-title mx-auto font-light text-2xl">Orders</h2>
             <MdOutlinePendingActions className="mx-auto" size={40} />
@@ -270,7 +271,7 @@ useEffect(() => {
           </div>
         </div>
         <div
-          className="m-2 bg-gradient-to-tr
+          className="m-2 rounded-md bg-gradient-to-tr
           from-[#382828] to-[#f0413b] text-white w-96"
         >
           <div className="card-body">

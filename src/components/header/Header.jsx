@@ -47,7 +47,7 @@ const Header = () => {
     const user = localStorage.getItem("user");
     if (user !== null) {
       const parse_user_data = JSON.parse(user);
-      if (parse_user_data.user.email) {
+      if (parse_user_data.email) {
         setLoggedIn(true);
       }
     }

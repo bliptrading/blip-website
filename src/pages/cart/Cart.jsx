@@ -107,7 +107,7 @@ const Cart = () => {
   };
 
   return (
-    <main className="container px-5 pt-12 mx-auto lg:px-10 lg:pt-20 font-Lato">
+    <main className="container bg-white lg:mt-8 px-5 pt-12 mx-auto lg:px-10 lg:pt-20 font-Lato">
       {cartArray.length === 0 ? (
         <div className="flex flex-col items-center justify-center space-y-5 text-center">
           <h1 className="text-3xl font-medium lg:text-6xl sm:text-5xl ">
@@ -147,8 +147,8 @@ const Cart = () => {
                     >
                       <td className="flex items-center justify-center w-1/4">
                         <img
-                          src={item.image}
-                          alt="fruit"
+                          src={item.imageUrl}
+                          alt=''
                           className="w-16 h-16 rounded-md lg:w-28 lg:h-28 "
                         />
                       </td>

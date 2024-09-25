@@ -16,9 +16,9 @@ function AdminLogin() {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        localStorage.setItem("user", JSON.stringify(userCredential));
+        localStorage.setItem("admin", JSON.stringify(userCredential));
         setLoggedIn(true);
-        navigate("/");
+        navigate("/admin/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;

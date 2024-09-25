@@ -2,10 +2,16 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { app } from "../../utils/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useForm } from "react-hook-form";
+
 import { toast, ToastContainer } from "react-toastify";
 import Store from "../../store/Store";
+import { getDoc,getFirestore, doc, collection } from "firebase/firestore";
+
+const db = getFirestore(app)
 
 function Login() {
+  const {register, handleSubmit} = useForm()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -14,24 +20,26 @@ function Login() {
   const [isLoading, setLoading] = useState(false);
 
 
-  const signIn = (e) => {
-    setLoading(true)
-    e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        localStorage.setItem("user", JSON.stringify(userCredential));
-        setLoggedIn(true)
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error( errorCode);
-      }).finally(()=> {
-        setLoading(false)
-      });
-  };
+const handleLogin = async(data) => {
+  setLoading(true)
+  const {email, password } = data;
+  try {
+    const docRef = doc(db, "users", email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists() && (docSnap.data().password ===password)) {
+       localStorage.setItem("user", JSON.stringify(docSnap.data()));
+       navigate('/')
+    }else {
+      throw new Error("Invalid Credentials")
+    }
+  }catch (err) {
+    toast.error(err)
 
+  }finally {
+    setLoading(false)
+  }
+
+  };
   return (
     <div>
       <div className="flex flex-col items-center justify-center ">
@@ -40,28 +48,29 @@ function Login() {
             WELCOME BACK
           </h1>
 
-          <form>
+          <form
+            onSubmit={handleSubmit(handleLogin)}
+            
+          >
             <h5>E-mail</h5>
             <input
+              {...register("email")}
               type="text"
               className="w-full p-2 border border-gray-500 bg-gray-50"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
 
             <h5>Password</h5>
             <input
+              {...register("password")}
               type="password"
               className="w-full p-2 border border-gray-500 bg-gray-50"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
 
             <div className="flex items-center justify-center">
               <button
                 type="submit"
                 className="w-2/4 px-6 py-3 my-6 font-light text-lg text-white bg-red-500 rounded-sm shadow "
-                onClick={signIn}
+                
               >
                 {isLoading ? (
                   <span className="loading loading-spinner mx-auto loading-lg"></span>

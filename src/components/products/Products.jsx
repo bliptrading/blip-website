@@ -4,7 +4,10 @@ import { useLocation,  useSearchParams, useNavigate } from "react-router-dom";
 import NotFound from "../404/NotFound";
 import BlogSection from "../blog-section/BlogSection";
 import Banner from "../banner/Banner";
+import { getFirestore,getDocs, collection } from "firebase/firestore";
+import { app } from "../../utils/firebase";
 
+const db = getFirestore(app)
 
 export const product = [
   {
@@ -122,6 +125,28 @@ const Products = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const location = useLocation();
   const [searchParams] = useSearchParams();
+
+   const [allProducts, setAllProducts] = useState([]);
+   const [isLoading, setLoading] = useState([]);
+
+   useEffect(() => {
+     const fetchData = async () => {
+       setLoading(true);
+       try {
+         let allDocs = [];
+         const querySnapShot = await getDocs(collection(db, "products"));
+         querySnapShot.forEach((doc) => {
+           allDocs.push(doc.data());
+         });
+         console.log(allDocs);
+         setProductArray(allDocs);
+       } catch (err) {
+       } finally {
+         setLoading(false);
+       }
+     };
+     fetchData();
+   }, []);
 
   useEffect(() => {
     const filterProducts = () => {

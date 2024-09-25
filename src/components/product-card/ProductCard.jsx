@@ -20,16 +20,16 @@ const ProductCard = ({ products }) => {
           key={product.id}
           className="rounded-sm bg-white transition-all hover:scale-110 duration-150 hover:cursor-pointer my-4 lg:my-1 lg:p-4 shadow-md lg:w-[240px] max-w-full lg:max-w-[250px]  "
         >
-          <Link to={'/products'}>
+          <Link to={`/${product.slug}`}>
             <img
-              src={product.image}
+              src={product.imageUrl}
               alt="product"
               className="w-32 mx-auto rounded-lg h-28"
             />
           </Link>
           <div className="space-y-1 text-center pt-1 p-4">
             <h3 className="text-md md:my-2 lg:my-2 rubik-text font-normal first-letter:uppercase h-auto">
-              {product.title}
+              {product.name}
             </h3>
 
             <div className=" flex text-lg flex-col text-center justify-between items-start">

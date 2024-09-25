@@ -1,13 +1,21 @@
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { RiHome6Line } from "react-icons/ri";
 import { CgNotes } from "react-icons/cg";
-import { HiOutlineShoppingBag, HiOutlineUsers } from "react-icons/hi2";
+import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoArrowBack } from "react-icons/io5";
 import { IoNewspaperOutline } from "react-icons/io5";
+import { LiaSignOutAltSolid } from "react-icons/lia";
 
 function AdminPage() {
   const navigate = useNavigate();
   const loc = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin");
+
+    navigate("/admin/login");
+
+  };
 
   const goBack = () => {
     if (loc.pathname.split("/")[2] !== "dashboard") {
@@ -80,6 +88,13 @@ function AdminPage() {
                   </span>
                 </NavLink>
               ))}
+              <a
+                onClick={handleLogout}
+                className="flex items-center p-3 flex-row text-white hover:cursor-pointer hover:bg-red-500 rounded-md"
+              >
+                <LiaSignOutAltSolid size={30} />
+                Sign Out
+              </a>
             </ul>
           </div>
         </div>
