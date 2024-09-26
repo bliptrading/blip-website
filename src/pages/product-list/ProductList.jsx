@@ -1,192 +1,91 @@
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../../components/product-card/ProductCard";
-import NotFound from "../../components/404/NotFound";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { useEffect, useState } from "react";
+import NoProduct from "../../components/no-products/NoProduct";
+import {
+  getDocs,
+  getFirestore,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
+import { app } from "../../utils/firebase";
+import HomeSkeleton from "../../components/home-page-skeleton/HomeSkeleton";
 
-
-const product = [
-  {
-    title: "Amazon Echo (3rd generation)",
-    category: "electronics",
-    quantity: 1,
-    price: "52",
-    image:
-      "https://media.very.co.uk/i/very/P6LTG_SQ1_0000000071_CHARCOAL_SLf?$300x400_retinamobilex2$",
-    id: 1,
-  },
-  {
-    title: "IFB 30 L Convection Microwave Oven",
-    category: "electronics",
-    quantity: 1,
-    price: "239",
-    image:
-      "https://images-na.ssl-images-amazon.com/images/I/81D8pNFmWzL._SL1500_.jpg",
-    id: 2,
-  },
-  {
-    title: "Samsung 49' Curved LED Gaming Monitor ",
-    category: "appliances",
-    quantity: 1,
-    price: "1095",
-    image:
-      "https://images-na.ssl-images-amazon.com/images/I/6125mFrzr6L._AC_SX355_.jpg",
-    id: 3,
-  },
-  {
-    title: "Mama'S Pride Parboiled Rice 10kg",
-    category: "grocery",
-    quantity: 1,
-    price: "13",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/52/934348/1.jpg?4747",
-    id: 4,
-  },
-  {
-    title: "Devon King'S Cooking Oil Keg - 3 litres",
-    category: "grocery",
-    quantity: 1,
-    price: "4",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/01/890938/1.jpg?8149",
-    id: 5,
-  },
-  {
-    title: "Nestle Golden Morn Grainsmart 900g x1",
-    category: "grocery",
-    quantity: 1,
-    price: "3",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/81/4801812/1.jpg?6772",
-    id: 6,
-  },
-  {
-    title: "Kellogg's Corn Flakes 300g Box (Kellogg's)",
-    category: "home-decor",
-    quantity: 1,
-    price: "6",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/53/095728/1.jpg?1256",
-    id: 7,
-  },
-  {
-    title: "Amstel Malta Can 33cl x 6",
-    category: "grocery",
-    quantity: 1,
-    price: "5",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/65/969129/1.jpg?5342",
-    id: 8,
-  },
-  {
-    title: "Men's Sports Running Shoes ",
-    category: "fashion",
-    quantity: 1,
-    price: "8",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/26/006249/1.jpg?0364",
-    id: 9,
-  },
-  {
-    title: "Men's Fashion Bracelet Four-piece",
-    category: "fashion",
-    quantity: 1,
-    price: "6",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/21/8104152/1.jpg?7069",
-    id: 10,
-  },
-  {
-    title: "Fashion Anklet Let On The Leg",
-    category: "fashion",
-    quantity: 1,
-    price: "11",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/87/6118622/1.jpg?9629",
-    id: 11,
-  },
-  {
-    title: "Ladies Leather Mini Hand Bag - Black",
-    category: "fashion",
-    quantity: 1,
-    price: "10",
-    image:
-      "https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/30/231008/1.jpg?3542",
-    id: 12,
-  },
-];
+const db = getFirestore(app);
 
 function ProductList() {
   const loc = useLocation();
   let pathList = `${loc.pathname}`.split("/");
-  const [filteredProduct, setFilter] = useState([...product]);
+  const category = pathList[2];
+  const [filteredProduct, setFilter] = useState([]);
   const navigate = useNavigate();
-
-  let [searchParams] = useSearchParams();
   const [searchString, setSearchString] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
+  const handleSearch = () => {
+    if (searchString.trim() === "") {
+      return;
+    }
+    const encodedSearchString = encodeURIComponent(searchString);
+    navigate(`/p/search/?q=${encodedSearchString}`);
+  };
 
   useEffect(() => {
-    const currentPath = pathList[2]; // Get the current category from the path
-    const filterProducts = () => {
-      let filtered = product.filter((each) => each.category === currentPath);
+    const fetchData = async () => {
+      setLoading(true); // Set loading to true before fetching
 
-      // Check if there's a search query
-      const searchQuery = searchParams.get("q");
-      if (searchQuery) {
-        filtered = filtered.filter((each) =>
-          each.title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+      try {
+        const catRef = collection(db, "products");
+        const q = query(catRef, where("category", "==", category));
+        const querySnapshot = await getDocs(q);
+
+        // Process and store the matching documents
+        const products = [];
+        querySnapshot.forEach((doc) => {
+          products.push({ id: doc.id, ...doc.data() });
+        });
+
+        setFilter(products); // Update state with matching products
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
-
-      setFilter(filtered); 
     };
-    filterProducts();
-  }, [loc.pathname, searchParams]); // Add searchParams as a dependency
 
-   const handleSearch = () => {
-     if (searchString.trim() === "") return; // Prevent empty searches
-
-     // Navigate based on current location
-     if (loc.pathname !== "/") {
-       navigate(`${loc.pathname}?q=${encodeURIComponent(searchString)}`);
-     } else {
-       navigate(`/?q=${encodeURIComponent(searchString)}`);
-     }
-   };
-
+    fetchData();
+  }, [loc.pathname]); // Dependency array - runs effect when location changes
 
   return (
     <>
-      <div className="breadcrumbs text-sm mx-4">
+      <div className="breadcrumbs lg:block hidden text-sm mx-4">
         <ul>
           <li>
-            <a>
-              <Link to={'/'}>
-                Home
-              </Link>
-              </a>
+            <Link to={"/"}>Home</Link>
           </li>
           <li>
-            <a>{pathList[1]}</a>
+            <span>{pathList[1]}</span>
           </li>
-          <li>{pathList[2]}</li>
+          <li>
+            <span>{pathList[2]}</span>
+          </li>
         </ul>
       </div>
       <IoMdArrowRoundBack
         onClick={() => navigate("/")}
-        className=" lg:hidden m-4"
+        className="lg:hidden m-4"
         size={30}
       />
-      <div className="mx-auto xl:hidden lg:hidden md:hidden  flex justify-center items-center w-full p-4 h-32">
+      <div className="mx-auto xl:hidden lg:hidden md:hidden flex justify-center items-center w-full p-4 h-32">
         <input
           type="text"
           onChange={(e) => setSearchString(e.target.value)}
           placeholder="Search products and categories"
-          className="flex-1 h-10 rounded-sm p-4 font-light text-black border-2 shadow-md  ring-0 focus:border-red-500 focus:outline-none"
+          className="flex-1 h-10 rounded-sm p-4 font-light text-black border-2 shadow-md ring-0 focus:border-red-500 focus:outline-none"
         />
-
         <button
           onClick={handleSearch}
           className="flex mx-2 items-center h-10 rounded-sm px-3 py-4 text-white bg-red-500"
@@ -194,12 +93,19 @@ function ProductList() {
           <CiSearch />
         </button>
       </div>
-      {filteredProduct.length > 0 ? (
-        <div className="grid lg:gap-10 grid-cols-2 mt-2  md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 ">
-          <ProductCard products={filteredProduct} />
-        </div>
+
+      {!isLoading ? (
+        <>
+          {filteredProduct.length > 0 ? (
+            <div className="grid lg:gap-10 grid-cols-2 mt-2 lg:m-12 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
+              <ProductCard products={filteredProduct} />
+            </div>
+          ) : (
+            <NoProduct /> // Show NoProduct only when loading is complete and no products found
+          )}
+        </>
       ) : (
-        <NotFound />
+        <HomeSkeleton /> // Show skeleton while loading
       )}
     </>
   );

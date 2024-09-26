@@ -9,13 +9,9 @@ const Hero = () => {
 
   const handleSearch = () => {
     if (searchString.trim() === "") return; // Prevent empty searches
-
-    // Navigate based on current location
-    if (loc.pathname !== "/") {
-      navigate(`${loc.pathname}?q=${encodeURIComponent(searchString)}`);
-    } else {
-      navigate(`/?q=${encodeURIComponent(searchString)}`);
-    }
+    
+    navigate(`/p/search/${loc.pathname}?q=${encodeURIComponent(searchString)}`);
+    
   };
 
   return (

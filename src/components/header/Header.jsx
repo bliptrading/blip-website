@@ -18,6 +18,19 @@ import logo from '../../assets/logo.jpeg'
 import { signOut, getAuth } from "firebase/auth";
 import { app } from "../../utils/firebase";
 import { BsHandbag } from "react-icons/bs";
+import {
+  FaTshirt,
+  FaMobileAlt,
+  FaHome,
+  FaHeartbeat,
+  FaShoppingCart,
+  FaBaby,
+  FaFutbol,
+  FaCar,
+  FaBook,
+  FaDigitalTachograph,
+} from "react-icons/fa";
+
 
 const Header = () => {
   const [nav, setNav] = useState(false);
@@ -52,9 +65,14 @@ const Header = () => {
       }
     }
   }, [loc.pathname]);
-  const handleSearch = () => {
-    navigate(`${loc.pathname}?q=` + searchString);
-  };
+
+ const handleSearch = () => {
+    if (searchString.trim() === "") {
+      return;
+    }
+  const encodedSearchString = encodeURIComponent(searchString); // Encode the search string
+  navigate(`/p/search/?q=${encodedSearchString}`); // Use the encoded string in the navigation
+ }
 
   const handleLogout = () => {
     setLoggedIn(false);
@@ -62,13 +80,54 @@ const Header = () => {
     navigate("/");
   };
 
-  const linkItems = [
-    { id: 1, to: "/", label: "All" },
-    { id: 2, to: "/category/fashion", label: "Fashion" },
-    { id: 3, to: "/category/home-decor", label: "Home Decor" },
-    { id: 4, to: "/category/electronics", label: "Electronics" },
-  ];
-
+const linkItems = [
+  { id: 1, to: "/", label: "All", icon: <FaShoppingCart /> },
+  { id: 2, to: "/category/fashion", label: "Fashion", icon: <FaTshirt /> },
+  {
+    id: 3,
+    to: "/category/electronics",
+    label: "Electronics",
+    icon: <FaMobileAlt />,
+  },
+  {
+    id: 4,
+    to: "/category/home-living",
+    label: "Home & Living",
+    icon: <FaHome />,
+  },
+  {
+    id: 5,
+    to: "/category/health-beauty",
+    label: "Health & Beauty",
+    icon: <FaHeartbeat />,
+  },
+  {
+    id: 6,
+    to: "/category/groceries",
+    label: "Groceries",
+    icon: <FaShoppingCart />,
+  },
+  { id: 7, to: "/category/baby-kids", label: "Baby & Kids", icon: <FaBaby /> },
+  {
+    id: 8,
+    to: "/category/sports-outdoors",
+    label: "Sports & Outdoors",
+    icon: <FaFutbol />,
+  },
+  { id: 9, to: "/category/automotive", label: "Automotive", icon: <FaCar /> },
+  {
+    id: 10,
+    to: "/category/books-stationery",
+    label: "Books & Stationery",
+    icon: <FaBook />,
+  },
+  {
+    id: 11,
+    to: "/category/digital-goods",
+    label: "Digital Goods",
+    icon: <FaDigitalTachograph />,
+  },
+];
   return (
     <>
       <nav className="">
@@ -282,25 +341,17 @@ const Header = () => {
                     <IoBasketOutline className="mr-1" /> Latest Products
                   </Link>
                 </li>
-                <li className="flex items-center font-thin w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
-                  <Link
-                    to="/category/electronics"
-                    className="flex items-center"
-                  >
-                    <HiOutlineDesktopComputer className="mr-1" /> Electronics
-                  </Link>
-                </li>
-                <li className="flex  items-center font-thin  bg-black   w-44 p-2 text-white rounded-sm cursor-pointer">
-                  <Link to="/category/fashion" className="flex items-center">
-                    <GiClothes size={20} className="mr-2" /> Fashion
-                  </Link>
-                </li>
-                <li className="flex  items-center font-thin  bg-black   w-44 p-2 text-white rounded-sm cursor-pointer">
-                  <Link to="/category/home-decor" className="flex items-center">
-                    <PiBuildingApartmentLight size={20} className="mr-2" /> Home
-                    Decor
-                  </Link>
-                </li>
+                {linkItems.map((each)=> (
+                  <li key={each.name} className="flex items-center font-thin w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                    <Link to={each.to} className="flex items-center">
+                      {each.icon}
+                      <span className="mx-1">
+                      {each.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+                
               </div>
             )}
           </ul>

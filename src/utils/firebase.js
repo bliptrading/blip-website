@@ -5,12 +5,19 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAVnYovlau8C5-KFDUsu-eIPlrJFCOkrIo",
-  authDomain: "blip-trading-34f05.firebaseapp.com",
-  projectId: "blip-trading-34f05",
-  storageBucket: "blip-trading-34f05.appspot.com",
-  messagingSenderId: "717078368715",
-  appId: "1:717078368715:web:2b1d54c7e20ca78223264e",
+  apiKey: "AIzaSyBfJOn-qgYMmUYdVXm3fHzy15sh9YUdW28",
+
+  authDomain: "blip-trading-d2b38.firebaseapp.com",
+
+  projectId: "blip-trading-d2b38",
+
+  storageBucket: "blip-trading-d2b38.appspot.com",
+
+  messagingSenderId: "491108303646",
+
+  appId: "1:491108303646:web:ff2c5c76a0173c26863f0f",
+
+  measurementId: "G-6J5PB3JCML",
 };
 
 // Initialize Firebase

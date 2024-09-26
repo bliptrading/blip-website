@@ -14,6 +14,21 @@ import { generateSlug } from "../../../utils/helpers";
 const db = getFirestore(app)
 const storage = getStorage(app)
 
+const categoryItems = [
+  { label: "All", slug: "all" },
+  { label: "Fashion", slug: "fashion" },
+  { label: "Home & Living", slug: "home-living" },
+  { label: "Electronics", slug: "electronics" },
+  { label: "Health & Beauty", slug: "health-beauty" },
+  { label: "Groceries", slug: "groceries" },
+  { label: "Baby & Kids", slug: "baby-kids" },
+  { label: "Sports & Outdoors", slug: "sports-outdoors" },
+  { label: "Automotive", slug: "automotive" },
+  { label: "Books & Stationery", slug: "books-stationery" },
+  { label: "Digital Goods", slug: "digital-goods" },
+];
+
+
 function DashboardTab() {
   const [seletectedImage, setSelectedImage] = useState('')
   const [totalProducts, setTotalProucts] = useState(0) 
@@ -177,16 +192,6 @@ useEffect(() => {
                     className="input text-md mt-2 input-bordered w-full"
                   />
                 </div>
-                <div className="mb-4 w-full ">
-                  <label htmlFor="my-5">Add Category</label>
-                  <input
-                    required
-                    {...register("category")}
-                    type="text"
-                    placeholder="New Category eg (electronics, home-decor)"
-                    className="input text-md max-w-sm mt-2 input-bordered w-full"
-                  />
-                </div>
 
                 <div className="mb-3 w-full">
                   <select
@@ -201,6 +206,23 @@ useEffect(() => {
                     <option>Latest</option>
                     <option>Top Deals</option>
                     <option>None</option>
+                  </select>
+                </div>
+                <div className="mb-3 w-full">
+                  <select
+                    {...register("category")}
+                    required
+                    className="select select-bordered w-full max-w-xs"
+                  >
+                    <option disabled selected>
+                      Choose Category
+                    </option>
+
+                    {categoryItems.map((each) => (
+                      <option key={each.label} value={each.slug}>
+                        {each.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
@@ -267,7 +289,9 @@ useEffect(() => {
           <div className="card-body">
             <h2 className="card-title mx-auto font-light text-2xl">Orders</h2>
             <MdOutlinePendingActions className="mx-auto" size={40} />
-            <h4 className="font-medium text-3xl text-center">{orderList.length}</h4>
+            <h4 className="font-medium text-3xl text-center">
+              {orderList.length}
+            </h4>
           </div>
         </div>
         <div
@@ -277,7 +301,9 @@ useEffect(() => {
           <div className="card-body">
             <h2 className="card-title mx-auto font-light text-2xl">Products</h2>
             <MdOutlinePendingActions className="mx-auto" size={40} />
-            <h4 className="font-medium text-3xl text-center">{totalProducts}</h4>
+            <h4 className="font-medium text-3xl text-center">
+              {totalProducts}
+            </h4>
           </div>
         </div>
       </div>

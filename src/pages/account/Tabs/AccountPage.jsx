@@ -67,7 +67,7 @@ function AccountPage() {
               <input
                 type="text"
                 name="username"
-                value={userInfo.username}
+                value={userInfo?.username}
                 onChange={handleChange}
                 className="grow"
                 placeholder="Username"
@@ -78,7 +78,7 @@ function AccountPage() {
               <input
                 type="email"
                 name="email"
-                value={userInfo.email}
+                value={userInfo?.email}
                 onChange={handleChange}
                 className="grow"
                 placeholder="Email"
@@ -90,7 +90,7 @@ function AccountPage() {
               <input
                 type="password"
                 name="currentPassword"
-                value={userInfo.currentPassword}
+                value={userInfo?.currentPassword}
                 onChange={handleChange}
                 className="grow"
                 placeholder="Current Password"
@@ -101,7 +101,7 @@ function AccountPage() {
               <input
                 type="password"
                 name="newPassword"
-                value={userInfo.newPassword}
+                
                 onChange={handleChange}
                 className="grow"
                 placeholder="New Password"
@@ -128,7 +128,7 @@ function AccountPage() {
               <input
                 type="text"
                 name="phone"
-                value={userInfo.phone}
+                value={userInfo?.phone}
                 onChange={handleChange}
                 className="grow"
                 placeholder="Phone"
@@ -139,7 +139,7 @@ function AccountPage() {
               <input
                 type="text"
                 name="address"
-                value={userInfo.address}
+                value={userInfo?.address}
                 onChange={handleChange}
                 className="grow"
                 placeholder="Address"
@@ -147,7 +147,7 @@ function AccountPage() {
             </label>
             <select
               name="location"
-              value={userInfo.location || ""}
+              value={userInfo?.location || ""}
               onChange={handleChange} // Add onChange to handle location updates
               className="select text-lg font-thin mt-4 select-bordered w-full"
             >

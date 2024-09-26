@@ -14,7 +14,7 @@ function ProductDetails() {
   const itemPath = loc.pathname.split("/")[1];
   const [allProducts, setAllProducts] = useState([]);
   const [isLoading, setLoading] = useState(true); // Initially loading is true
-  const [currentProduct, setProduct] = useState(null);
+  const [currentProduct, setProduct] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {

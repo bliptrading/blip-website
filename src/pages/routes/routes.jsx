@@ -23,6 +23,7 @@ import BlogsTab from "../admin/Tabs/BlogTab";
 import BlogDetailsPage from "../blog/BlogPage";
 import ProductDetails from "../../components/products/ProductDetails/ProductDetails";
 import ReviewsPage from "../../components/products/Reviews/ReviewsPage";
+import ProductQuery from "../../components/products/product-search/ProductQuery";
 
 function RoutesLayout() {
   const [isAuthenticated, setAuthenticated] = useState(false);
@@ -59,6 +60,7 @@ function RoutesLayout() {
             <Route path=":category" element={<ProductList />} />
           </Route>
         </Route>
+        <Route path="/p/search" element={<ProductQuery />} />
         <Route path="blog/:slug" element={<BlogDetailsPage />} />
 
         <Route
