@@ -86,21 +86,30 @@ function BlogSection() {
         fetchProducts();
       }, []);
   return (
-    <article className="w-full h-full ">
-      <div className="grid m-4 grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-4">
+    <article className="w-full h-full   ">
+      <div className="grid m-4 grid-cols-2  lg:grid-cols-4 md:grid-cols-3 gap-4">
         {allBlogs.map((blog) => (
           <div
             key={blog.id}
-            className="card bg-base-100 image-full w-full shadow-xl"
+            className=" hover:scale-105 translate duration-100  bg-base-100 image-full w-full shadow-xl"
           >
-            <figure>
-              <img src={blog.bannerImage} alt={blog.title} />
-            </figure>
+            {/* <div className=" h-52 m"> */}
+              <img
+                className=" bg-center w-full "
+                src={blog.bannerImage}
+                alt={blog.title}
+              />
+            {/* </div> */}
+
             <div className="card-body">
               <h2 className="card-title">{blog.title}</h2>
-              <p>{blog.description}</p>
+              <span className="text-gray-500">Author | {blog.author}</span>
+              <span className="text-gray-500 text-sm">{blog.date}</span>
               <div className="card-actions justify-end">
-                <Link to={`/blog/${blog.slug}`} className="btn bg-red-500 rounded-md text-white">
+                <Link
+                  to={`/blog/${blog.slug}`}
+                  className="btn bg-red-500 rounded-md text-white"
+                >
                   View Now
                 </Link>
               </div>

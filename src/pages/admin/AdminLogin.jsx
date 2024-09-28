@@ -1,16 +1,27 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { app } from "../../utils/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import Store from "../../store/Store";
 
 function AdminLogin() {
+  const loc = useLocation()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const auth = getAuth(app);
   const { setLoggedIn } = Store();
+
+
+  useEffect(()=> {
+    const admin_user = localStorage.getItem("admin")
+    if (admin_user) {
+      navigate("/admin/dashboard")
+    }
+
+
+  },[loc.pathname])
 
   const signIn = (e) => {
     e.preventDefault();

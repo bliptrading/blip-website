@@ -54,7 +54,7 @@ function RoutesLayout() {
     <>
       <Routes>
         <Route path="/" element={<Home />}>
-          <Route path=":slug" element={<ProductDetails />} />
+          <Route path=":slug"   element={<ProductDetails />} />
           <Route path=":slug/reviews" element={<ReviewsPage />} />
           <Route path="category/" element={<ProductList />}>
             <Route path=":category" element={<ProductList />} />

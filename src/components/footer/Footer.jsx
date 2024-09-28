@@ -45,7 +45,7 @@ const Footer = () => {
           <Link to="" className="mb-2">About Us</Link>
           <Link className="" to={'/blog'}>Blog</Link>
           <Link to="" >Contact</Link>
-          <Link className=" link" to={'/admin/dashboard'}>Admin Page</Link>
+          <Link className="" to={'/admin/dashboard'}>Admin</Link>
         </ul>
       </div>
       <div className="flex flex-col items-center w-32 text-center ">

@@ -3,7 +3,7 @@ import { FaSort, FaEye } from "react-icons/fa";
 import { LuCamera, LuVideo, LuImage } from "react-icons/lu";
 import { useForm } from "react-hook-form";
 import { getStorage, ref, uploadBytes , getDownloadURL, deleteObject } from "firebase/storage";
-import { getFirestore,addDoc,getDocs, collection } from "firebase/firestore";
+import { getFirestore,addDoc,getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 import { app } from "../../../utils/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import { generateSlug } from "../../../utils/helpers";
@@ -17,6 +17,18 @@ function BlogsTab() {
   const [isLoading, setLoading] = useState(false)
 
 
+  const deletePost = async(id) => {
+    try {
+      await deleteDoc(doc(db, "blogs", id));
+      toast.info("Blog Deleted")
+    }catch(err) {
+      console.log(err)
+      toast.error("Could not delete blog")
+    }finally {
+
+    }
+
+  }
   
 
   const handleCreatePost = async (data) => {
@@ -116,6 +128,11 @@ function BlogsTab() {
         {/* You can open the modal using document.getElementById('ID').showModal() method */}
         <dialog id="my_modal_4" className="modal">
           <div className="modal-box w-11/12 h-4/5 flex flex-col max-w-5xl">
+            <span>
+              Blog should be written in{" "}
+              <a target="_blank" className="link font-thin text-red-500" href="https://www.markdownguide.org/cheat-sheet/">markdown</a>{" "}
+              format.{" "}
+            </span>
             <h3 className="font-bold text-2xl mx-auto mb-4">New Post</h3>
 
             {/*Blog form */}
@@ -201,7 +218,7 @@ function BlogsTab() {
         </dialog>
       </div>
       <div className="grid gap-36 grid-cols-2 lg:grid-cols-4  ">
-        {blogs.map((blog)=> (
+        {blogs.map((blog) => (
           <div className="card  rounded-sm bg-base-100  w-60 lg:w-80 shadow-xl">
             <figure className="px-3 pt-4">
               <img
@@ -213,18 +230,16 @@ function BlogsTab() {
             <div className="card-body items-center text-center">
               <p>{blog.title}</p>
               <div className="card-actions">
-                <button className="btn bg-red-500 rounded-md text-white font-light text-lg">
+                {/* <button className="btn bg-red-500 rounded-md text-white font-light text-lg">
                   Update
-                </button>
-                <button className="btn btn-ghost rounded-md text-black font-thin text-lg">
+                </button> */}
+                <button onClick={()=>deletePost(blog._id)} className="btn btn-ghost rounded-md text-black font-thin text-lg">
                   Delete
                 </button>
               </div>
             </div>
           </div>
-
         ))}
-        
       </div>
     </div>
   );

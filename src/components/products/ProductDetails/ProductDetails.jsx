@@ -4,17 +4,22 @@ import { Link, useLocation } from "react-router-dom";
 import { LiaStarSolid } from "react-icons/lia";
 import { MdOutlineKeyboardArrowRight, MdAdd } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore,doc ,updateDoc, arrayUnion } from "firebase/firestore";
 import { app } from "../../../utils/firebase";
-
+import { ToastContainer, toast } from "react-toastify";
+import ReactStars from 'react-stars'
+import Store from "../../../store/Store";
 const db = getFirestore(app);
 
 function ProductDetails() {
+  const [stars, setStars] = useState();
+  const [reviewDetails, setReviewDetails] = useState()
   const loc = useLocation();
   const itemPath = loc.pathname.split("/")[1];
   const [allProducts, setAllProducts] = useState([]);
   const [isLoading, setLoading] = useState(true); // Initially loading is true
   const [currentProduct, setProduct] = useState({});
+  const { cartArray, addToCart, removeFromCart } = Store();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,11 +28,12 @@ function ProductDetails() {
         let allDocs = [];
         const querySnapShot = await getDocs(collection(db, "products"));
         querySnapShot.forEach((doc) => {
-          allDocs.push(doc.data());
+          allDocs.push({_id:doc.id , ...doc.data()});
         });
         setAllProducts(allDocs);
         const currentProd = allDocs.filter((each) => each.slug === itemPath)[0];
         setProduct(currentProd);
+        console.log(currentProd)
       } catch (err) {
         console.error(err);
       } finally {
@@ -37,10 +43,35 @@ function ProductDetails() {
     fetchData();
   }, [itemPath]);
 
-  const handleAddToCart = (product) => {
-    // Logic for adding to cart
-    console.log("Add to cart", product);
+  const handleAddToCart = (cart) => {
+    const itemExist = cartArray.find((item) => item.id === cart.id);
+    if (!itemExist) {
+      addToCart(cart);
+      toast.success("Item added");
+    }
   };
+
+  const addFeedBack = async() => {
+
+   
+    try {
+      const productRef = doc(db, "products", currentProduct._id);
+      await updateDoc(productRef, {
+        reviews:arrayUnion({ star:stars, details:reviewDetails})
+      })
+       toast.success("Review Added");
+       setStars("Pick your rating");
+       setReviewDetails("");
+
+
+    }catch (err) {
+      alert("Error")
+      console.log(err)
+    }finally {
+
+    }
+    
+  }
 
   return (
     <>
@@ -62,44 +93,52 @@ function ProductDetails() {
       </div>
 
       {/* Product Content Section */}
-      {!isLoading && currentProduct ? (
-        <div className="py-10 lg:mx-40 my-4">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="md:flex md:space-x-6">
-              {/* Product Image */}
-              <div className="md:w-1/3">
-                <img
-                  src={currentProduct?.imageUrl}
-                  alt={currentProduct?.name}
-                  className="rounded-lg shadow-lg w-full h-auto"
-                />
-              </div>
-
-              {/* Product Details */}
-              <div className="md:w-2/3">
-                <h1 className="text-2xl mt-10 lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
-                  {currentProduct?.name}
-                </h1>
-                <span>Price</span>
-                <h1 className="text-xl mt-4 lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
-                  GHC {currentProduct?.price}
-                </h1>
-                <div className="flex flex-col text-gray-600 mb-6">
-                  <span className="font-extrabold">Description</span>
-                  <p>{currentProduct?.description}</p>
+      {!isLoading ? (
+        currentProduct ? (
+          <div className="py-10 lg:mx-40 my-4">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="md:flex md:space-x-6">
+                {/* Product Image */}
+                <div className="md:w-1/3">
+                  <img
+                    src={currentProduct?.imageUrl}
+                    alt={currentProduct?.name}
+                    className="rounded-lg shadow-lg w-full h-auto"
+                  />
                 </div>
-                <div className="text-lg font-light text-gray-700 space-y-4 leading-relaxed">
-                  <button
-                    onClick={() => handleAddToCart(currentProduct)}
-                    className="my-1 w-full hover:bg-red-200 mx-auto bg-red-500 text-white flex items-center p-2 rounded-sm justify-center"
-                  >
-                    <AiOutlineShoppingCart className="mr-2" /> Add to Cart
-                  </button>
+
+                {/* Product Details */}
+                <div className="md:w-2/3">
+                  <h1 className="text-2xl mt-10 lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
+                    {currentProduct?.name}
+                  </h1>
+                  <span>Price</span>
+                  <h1 className="text-xl mt-4 lg:mt-3 roboto-thin font-medium text-gray-900 mb-4">
+                    GHC {currentProduct?.price}
+                  </h1>
+                  <div className="flex flex-col text-gray-600 mb-6">
+                    <span className="font-extrabold">Description</span>
+                    <p>{currentProduct?.description}</p>
+                  </div>
+                  <div className="text-lg font-light text-gray-700 space-y-4 leading-relaxed">
+                    <button
+                      onClick={() => handleAddToCart(currentProduct)}
+                      className="my-1 w-full hover:bg-red-200 mx-auto bg-red-500 text-white flex items-center p-2 rounded-sm justify-center"
+                    >
+                      <AiOutlineShoppingCart className="mr-2" /> Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center justify-center h-screen">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Product Not Found
+            </h2>
+          </div>
+        )
       ) : (
         // Display skeleton loader when isLoading is true
         <div className="flex m-2 lg:my-10 lg:mx-44 items-center justify-center w-full space-x-8 lg:flex-row">
@@ -127,10 +166,11 @@ function ProductDetails() {
               <div className="modal-box">
                 <h3 className="font-bold text-lg">Add Review</h3>
                 <div className="w-full mb-4">
-                  <select className="select w-full max-w-xs">
-                    <option disabled selected>
-                      Pick your rating
-                    </option>
+                  <select
+                    required
+                    onChange={(e) => setStars(e.target.value)}
+                    className="select w-full max-w-xs"
+                  >
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -140,13 +180,17 @@ function ProductDetails() {
                 </div>
                 <div className="w-full">
                   <textarea
+                    value={reviewDetails}
+                    onChange={(e) => setReviewDetails(e.target.value)}
                     placeholder="Say something"
                     className="textarea-secondary p-2 rounded-md"
                   ></textarea>
                 </div>
                 <div className="modal-action">
-                  <button className="btn">Save</button>
                   <form method="dialog">
+                    <button onClick={addFeedBack} className="btn">
+                      Save
+                    </button>
                     <button className="btn">Close</button>
                   </form>
                 </div>
@@ -161,27 +205,28 @@ function ProductDetails() {
             </Link>
           </div>
           <hr />
-          <div className="w-full my-2">
-            <div className="w-full flex p-1">
-              <LiaStarSolid className="text-red-400" size={20} />
-              <LiaStarSolid className="text-red-400" size={20} />
-              <LiaStarSolid size={20} />
-              <LiaStarSolid size={20} />
-              <LiaStarSolid size={20} />
-              <span className="text-sm ml-auto font-thin">
-                {new Date().toLocaleDateString()}
-              </span>
+          {currentProduct?.reviews?.map((each) => (
+            <div className="w-full my-2">
+              <div className="w-full flex p-1">
+                <ReactStars
+                  size={25}
+                  color2={"#ef4444"}
+                  edit={false}
+                  value={each.star}
+                />
+                <span className="text-sm ml-auto font-thin">
+                  {new Date().toLocaleDateString()}
+                </span>
+              </div>
+
+              <div className="w-full">
+                <span className="font-light text-gray-400 text-base">
+                  {each.details}
+                </span>
+                <hr />
+              </div>
             </div>
-            <div className="w-full">
-              <h1 className="font-light text-base">
-                This is an excellent product
-              </h1>
-              <span className="font-light text-gray-400 text-base">
-                By James Aurthur
-              </span>
-              <hr />
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -191,7 +236,11 @@ function ProductDetails() {
           Similar Items
         </h1>
         <div className="grid lg:gap-10 grid-cols-2 mt-8 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
-          <ProductCard products={allProducts.filter((each)=> ((each.category = currentProduct.category)))} />
+          <ProductCard
+            products={allProducts.filter(
+              (each) => (each.category = currentProduct?.category)
+            )}
+          />
         </div>
       </section>
     </>
