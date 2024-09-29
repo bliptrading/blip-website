@@ -18,7 +18,7 @@ const Footer = () => {
         </h1>
         <ul className="space-y-4 font-light mt-4 cursor-pointer">
           <li className="flex items-center">
-            <AiOutlineMail className="mr-2 " /> bliptradingbusiness.com
+            <AiOutlineMail className="mr-2 " /> bliptradingbusiness@gmail.com
           </li>
           <li className="flex items-center">
             <CiLocationOn className="mr-2 text-xl " />
