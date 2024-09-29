@@ -18,7 +18,7 @@ const Footer = () => {
         </h1>
         <ul className="space-y-4 font-light mt-4 cursor-pointer">
           <li className="flex items-center">
-            <AiOutlineMail className="mr-2 " /> you.shop@gmail.com
+            <AiOutlineMail className="mr-2 " /> bliptradingbusiness.com
           </li>
           <li className="flex items-center">
             <CiLocationOn className="mr-2 text-xl " />
@@ -29,23 +29,35 @@ const Footer = () => {
             10:00-18:00, Mon - Sat
           </li>
           <li className="flex items-center ">
-            <FiPhoneCall className="mr-2 " /> (233) 903 414 4706
+            <FiPhoneCall className="mr-2 " /> 024 785 9178
+          </li>
+          <li className="flex items-center ">
+            <FaWhatsapp className="mr-2 " /> 024 785 9178
           </li>
         </ul>
         <div className="flex py-5 space-x-5 text-xl cursor-pointer">
-          <CiFacebook />
-          <FiTwitter />
-          <CiInstagram />
-          <FaWhatsapp />
+          <Link href="https://www.facebook.com" passHref>
+            <CiFacebook />
+          </Link>
+          <Link href="https://www.instagram.com" passHref>
+            <CiInstagram />
+          </Link>
+          <Link href="https://wa.me/0247859178" passHref></Link>
         </div>
       </div>
       <div>
         <h1 className=" text-lg  font-medium roboto-thin ">Company</h1>
         <ul className="space-y-2 flex flex-col mt-4 font-light  cursor-pointer">
-          <Link to="" className="mb-2">About Us</Link>
-          <Link className="" to={'/blog'}>Blog</Link>
-          <Link to="" >Contact</Link>
-          <Link className="" to={'/admin/dashboard'}>Admin</Link>
+          <Link to="" className="mb-2">
+            About Us
+          </Link>
+          <Link className="" to={"/blog"}>
+            Blog
+          </Link>
+          <Link to="">Contact</Link>
+          <Link className="" to={"/admin/dashboard"}>
+            Admin
+          </Link>
         </ul>
       </div>
       <div className="flex flex-col items-center w-32 text-center ">

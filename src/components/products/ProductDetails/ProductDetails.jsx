@@ -20,6 +20,7 @@ function ProductDetails() {
   const [isLoading, setLoading] = useState(true); // Initially loading is true
   const [currentProduct, setProduct] = useState({});
   const { cartArray, addToCart, removeFromCart } = Store();
+  const [currentActiveImage, setActiveImage] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +34,7 @@ function ProductDetails() {
         setAllProducts(allDocs);
         const currentProd = allDocs.filter((each) => each.slug === itemPath)[0];
         setProduct(currentProd);
+        setActiveImage(currentProd.imageUrl)
         console.log(currentProd)
       } catch (err) {
         console.error(err);
@@ -101,10 +103,30 @@ function ProductDetails() {
                 {/* Product Image */}
                 <div className="md:w-1/3">
                   <img
-                    src={currentProduct?.imageUrl}
+                    src={currentActiveImage}
                     alt={currentProduct?.name}
                     className="rounded-lg shadow-lg w-full h-auto"
                   />
+                  <div
+                    className="max-w-full overflow-x-auto space-x-2 
+                   flex flex-row mt-3 "
+                  >
+                    <div
+                      onClick={() => setActiveImage(currentProduct?.imageUrl)}
+                      className="hover:cursor-pointer"
+                    >
+                      <img src={currentProduct?.imageUrl} alt={"image"} />
+                    </div>
+                    {currentProduct?.otherImages.map((each) => (
+                      <div
+                        onClick={() => setActiveImage(each.src)}
+                        className="hover:cursor-pointer"
+                        key={each.src}
+                      >
+                        <img src={each.src} alt={each.src} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Product Details */}

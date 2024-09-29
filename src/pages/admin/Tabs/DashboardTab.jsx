@@ -34,6 +34,7 @@ function DashboardTab() {
   const [totalProducts, setTotalProucts] = useState(0) 
   const [imagePreview, setImagePreview] = useState(null);
   const [orderList, setOrderList] = useState([]);
+  const [altImages, setAltImages] = useState([]);
 
   const [isLoading, setLoading]  = useState(false)
   const {
@@ -100,9 +101,12 @@ useEffect(() => {
 
    const handleUploadProduct = async (data) => {
      // Check if an image is selected
+    //  console.log(data)
+    //  return
      setLoading(true)
      if (!data.image || !data.image[0]) {
        alert("Please select an image to upload.");
+       setLoading(false)
        return;
      }
 
@@ -117,8 +121,18 @@ useEffect(() => {
        // Upload the file to Firebase Storage
        await uploadBytes(storageRef, data.image[0]);
 
-       // Get the download URL of the uploaded file
+       let allImageUrls = [];
        const filePathOnCloud = await getDownloadURL(storageRef);
+       if (data.altImages){
+        for (const elm of data.altImages){
+          const pathImage = `${new Date().toISOString() + elm.name}`;
+          const fileRef = ref(storage, `products/${pathImage}`);
+          await uploadBytes(fileRef, elm)
+          const downloadUrl = await getDownloadURL(fileRef)
+          allImageUrls.push({name:elm.name , src:downloadUrl})
+
+        }
+       }
        
        const productData = { 
         id: crypto.randomUUID(),
@@ -131,9 +145,13 @@ useEffect(() => {
         pathRef: pathname,
         slug:generateSlug(data.name+ " " +data.tags+ " " +data.category ),
         reviews:[],
+        otherImages:[...allImageUrls],
         quantity:1
        }
-       await addDoc(collection(db, "products"), productData);
+       if (altImages){
+         await addDoc(collection(db, "products"), productData);
+
+       }
 
        reset()
       //  console.log(productData)
@@ -227,9 +245,25 @@ useEffect(() => {
                 </div>
 
                 <div className="mb-4 w-full ">
+                  <label htmlFor="my-5 text-base-100">Product Image</label><br></br>
+
                   <input
                     {...register("image")}
                     type="file"
+                    placeholder="product image"
+                    multiple={false}
+                    className="file-input file-input-bordered w-full max-w-xs"
+                  />
+                </div>
+                <div className="mb-4 w-full ">
+                  <label className="text-sm text-gray-400" htmlFor="altImages">
+                    Alternative Images
+                  </label>
+                  <br></br>
+                  <input
+                    {...register("altImages")}
+                    type="file"
+                    multiple={true}
                     placeholder="product image"
                     className="file-input file-input-bordered w-full max-w-xs"
                   />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import ProductCard from "../product-card/ProductCard";
 import { useLocation,  useSearchParams, useNavigate } from "react-router-dom";
 import NotFound from "../404/NotFound";
@@ -30,7 +30,6 @@ const Products = () => {
          querySnapShot.forEach((doc) => {
            allDocs.push(doc.data());
          });
-         console.log(allDocs);
          setProductArray(allDocs);
        } catch (err) {
        } finally {
@@ -108,7 +107,10 @@ const Products = () => {
       </div>
       <section className="w-full ">
           <h1 className="text-white my-12 bg-red-500 p-2 text-center font-medium text-2xl">Blog Posts</h1>
-        <BlogSection />
+        <Suspense fallback={<HomeSkeleton />} >
+          <BlogSection />
+
+        </Suspense>
       </section>
       
     </main>
