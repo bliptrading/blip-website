@@ -30,7 +30,7 @@ const categoryItems = [
 
 
 function DashboardTab() {
-  const [seletectedImage, setSelectedImage] = useState('')
+  const [seletectedImages, setSelectedImages] = useState([])
   const [totalProducts, setTotalProucts] = useState(0) 
   const [imagePreview, setImagePreview] = useState(null);
   const [orderList, setOrderList] = useState([]);
@@ -41,6 +41,7 @@ function DashboardTab() {
     register,
     reset,
     handleSubmit,
+    
     formState: { errors },
   } = useForm();
 
@@ -97,12 +98,25 @@ useEffect(() => {
   }
 
 ,[])
- 
+  
+    const createPreview = (e)=> {
+      // console.log(e)
+      let url = URL.createObjectURL(e.target.files[0])
+      setImagePreview(url)
+    }
+
+   const createPreviewList = (e) => {
+    
+    let  allAltImages = []
+    console.log(e)
+    for (const elm of e) {
+      allAltImages.push(URL.createObjectURL(elm))
+    }
+    setSelectedImages(allAltImages)
+   }
 
    const handleUploadProduct = async (data) => {
-     // Check if an image is selected
-    //  console.log(data)
-    //  return
+    
      setLoading(true)
      if (!data.image || !data.image[0]) {
        alert("Please select an image to upload.");
@@ -154,6 +168,7 @@ useEffect(() => {
        }
 
        reset()
+       setSelectedImages([])
       //  console.log(productData)
        toast.success("Product added to store")
 
@@ -224,6 +239,7 @@ useEffect(() => {
                     <option>Latest</option>
                     <option>Top Deals</option>
                     <option>None</option>
+                    <option>Flash Sales</option>
                   </select>
                 </div>
                 <div className="mb-3 w-full">
@@ -245,15 +261,27 @@ useEffect(() => {
                 </div>
 
                 <div className="mb-4 w-full ">
-                  <label htmlFor="my-5 text-base-100">Product Image</label><br></br>
+                  <label htmlFor="my-5 text-base-100">Product Image</label>
+                  <br></br>
 
                   <input
                     {...register("image")}
+                    onChange={createPreview}
                     type="file"
                     placeholder="product image"
                     multiple={false}
                     className="file-input file-input-bordered w-full max-w-xs"
                   />
+                </div>
+
+                <div className="mb-4 w-full flex justify-start rounded-lg">
+                  {imagePreview && (
+                    <div className="avatar">
+                      <div className="w-32 rounded">
+                        <img src={imagePreview} />
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="mb-4 w-full ">
                   <label className="text-sm text-gray-400" htmlFor="altImages">
@@ -262,21 +290,26 @@ useEffect(() => {
                   <br></br>
                   <input
                     {...register("altImages")}
+                    onChange={(e) => createPreviewList(e.target.files)}
                     type="file"
                     multiple={true}
                     placeholder="product image"
                     className="file-input file-input-bordered w-full max-w-xs"
                   />
-                </div>
-                {imagePreview && (
-                  <div className="mb-4 rounded-lg">
-                    <img
-                      src={imagePreview}
-                      alt="Image Preview"
-                      className="mx-auto w-40 rounded-lg"
-                    />
+                </div> 
+                {
+                  seletectedImages && (
+                  <div className="mb-4 w-full flex  flex-shrink-1 flex-row justify-start">
+                    {seletectedImages.map((each) => (
+                      <div className="avatar mx-1 ">
+                        <div className="w-28 rounded">
+                          <img src={each} />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                )}
+                  )
+                }
                 <div className="mb-4 w-full ">
                   <textarea
                     {...register("description")}

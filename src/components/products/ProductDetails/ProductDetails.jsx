@@ -108,22 +108,30 @@ function ProductDetails() {
                     className="rounded-lg shadow-lg w-full h-auto"
                   />
                   <div
-                    className="max-w-full overflow-x-auto space-x-2 
+                    className="h-36 overflow-x-auto overflow-y-hidden space-x-2 
                    flex flex-row mt-3 "
                   >
                     <div
                       onClick={() => setActiveImage(currentProduct?.imageUrl)}
-                      className="hover:cursor-pointer"
+                      className="hover:cursor-pointer h-40 w-40 "
                     >
-                      <img src={currentProduct?.imageUrl} alt={"image"} />
+                      <img
+                        className="h-20 w-20"
+                        src={currentProduct?.imageUrl}
+                        alt={"image"}
+                      />
                     </div>
-                    {currentProduct?.otherImages.map((each) => (
+                    {currentProduct?.otherImages?.map((each) => (
                       <div
                         onClick={() => setActiveImage(each.src)}
-                        className="hover:cursor-pointer"
+                        className="hover:cursor-pointer "
                         key={each.src}
                       >
-                        <img src={each.src} alt={each.src} />
+                        <img
+                          className="h-20 w-20"
+                          src={each.src}
+                          alt={each.src}
+                        />
                       </div>
                     ))}
                   </div>
