@@ -49,13 +49,11 @@ export default function ProductsTab() {
       await deleteObject(imageRef);
       toast.success("Product deleted successfully")
     }catch(err) {
-      console.log(err)
       toast.error("Could not delete product")
     }
   };
 
   const handleSave = async(updatedProduct) => {
-    console.log("Saving updated product:", updatedProduct);
     try {
       const currentRef = doc(db, "products", updatedProduct._id);
       await updateDoc(currentRef, {
@@ -79,7 +77,6 @@ export default function ProductsTab() {
         let allDocs = [];
         const querySnapshot = await getDocs(collection(db, "products"));
         querySnapshot.forEach((doc) => {
-          console.log(doc.id)
           allDocs.push({_id:doc.id, ...doc.data()})
           setAllProducts(allDocs)
           

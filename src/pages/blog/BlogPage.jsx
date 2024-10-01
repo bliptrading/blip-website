@@ -28,7 +28,6 @@ function BlogDetailsPage() {
              
              setCurrentBlog(allDocs[0]);
            });
-           console.log(currentBlog)
          } catch (error) {
            toast.error("Error fetching documents: ");
          } finally {

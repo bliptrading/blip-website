@@ -32,7 +32,6 @@ function OrdersTab() {
        querySnapShot.forEach((doc)=> {
         allDocs.push(doc.data())
        })
-      //  console.log(allDocs)
        setOrderList(allDocs)
       }catch(err) {
 

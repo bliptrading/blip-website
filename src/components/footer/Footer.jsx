@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer
       id="contact"
-      className=" mt-8  bg-black text-gray-50 p-8  grid grid-cols-2  px-5 pb-4 mx-auto lg:flex lg:justify-between sm:grid-cols-2 gap-x-7  gap-y-10 lg:gap-y-0 lg:px-10"
+      className=" mt-8  bg-black text-gray-50 p-8   grid grid-cols-1  px-5 pb-4 mx-auto lg:flex lg:justify-between sm:grid-cols-2 gap-x-7  gap-y-10 lg:gap-y-0 lg:px-10"
     >
       <div>
         <h1 className="text-3xl text-red-500 font-bold roboto-thin ">

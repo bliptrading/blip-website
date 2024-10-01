@@ -90,7 +90,7 @@ useEffect(() => {
       setTotalProucts(count)
        // Set state with the fetched documents
     } catch (err) {
-      console.log(err);
+      alert(err);
     } finally {
       setLoading(false);
     }}
@@ -100,7 +100,6 @@ useEffect(() => {
 ,[])
   
     const createPreview = (e)=> {
-      // console.log(e)
       let url = URL.createObjectURL(e.target.files[0])
       setImagePreview(url)
     }
@@ -108,7 +107,6 @@ useEffect(() => {
    const createPreviewList = (e) => {
     
     let  allAltImages = []
-    console.log(e)
     for (const elm of e) {
       allAltImages.push(URL.createObjectURL(elm))
     }
@@ -169,7 +167,6 @@ useEffect(() => {
 
        reset()
        setSelectedImages([])
-      //  console.log(productData)
        toast.success("Product added to store")
 
      } catch (error) {

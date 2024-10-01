@@ -22,7 +22,7 @@ function BlogsTab() {
       await deleteDoc(doc(db, "blogs", id));
       toast.info("Blog Deleted")
     }catch(err) {
-      console.log(err)
+      
       toast.error("Could not delete blog")
     }finally {
 
@@ -32,7 +32,6 @@ function BlogsTab() {
   
 
   const handleCreatePost = async (data) => {
-    // console.log(data);
     setLoading(true)
     try {
       // Create a unique filename for the banner image

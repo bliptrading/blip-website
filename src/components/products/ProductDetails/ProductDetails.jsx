@@ -35,7 +35,6 @@ function ProductDetails() {
         const currentProd = allDocs.filter((each) => each.slug === itemPath)[0];
         setProduct(currentProd);
         setActiveImage(currentProd.imageUrl)
-        console.log(currentProd)
       } catch (err) {
         console.error(err);
       } finally {
@@ -68,7 +67,6 @@ function ProductDetails() {
 
     }catch (err) {
       alert("Error")
-      console.log(err)
     }finally {
 
     }

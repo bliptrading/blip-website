@@ -11,7 +11,6 @@ const useLocalUser = () => {
     } else {
       const json_data = JSON.parse(user);
       setUserJson(json_data);
-      console.log(json_data)
       setNa(false); // Ensure na is false if user is found
     }
   }, []); // Empty dependency array means this runs once on mount

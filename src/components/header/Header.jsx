@@ -46,7 +46,6 @@ const Header = () => {
       .then(() => {
         // Sign-out successful
         localStorage.removeItem('user')
-        console.log("User signed out successfully.");
         setLoggedIn(false)
         navigate('/')
       })
