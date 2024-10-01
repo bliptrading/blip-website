@@ -36,13 +36,12 @@ const Footer = () => {
           </li>
         </ul>
         <div className="flex py-5 space-x-5 text-xl cursor-pointer">
-          <Link href="https://www.facebook.com" passHref>
+          <Link to="https://www.facebook.com/share/2KmRjzrTQ3PyiREb" passHref>
             <CiFacebook />
           </Link>
-          <Link href="https://www.instagram.com" passHref>
-            <CiInstagram />
+          <Link to="https://wa.me/233247859178" passHref>
+            <FaWhatsapp className="mr-2 " />
           </Link>
-          <Link href="https://wa.me/0247859178" passHref></Link>
         </div>
       </div>
       <div>
