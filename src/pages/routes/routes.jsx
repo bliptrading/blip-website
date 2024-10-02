@@ -66,7 +66,7 @@ function RoutesLayout() {
         <Route
           path="profile"
           element={
-            <ProtectedRoute state={isAuthenticated} path={-1} element={<ProfilePage />} />
+            <ProtectedRoute state={isAuthenticated} path={"/accounts/login"} element={<ProfilePage />} />
           }
         >
           <Route path="settings" element={<AccountPage />} />
