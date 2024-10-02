@@ -122,10 +122,7 @@ function Register() {
           </form>
 
           <div className="flex flex-col items-center justify-center">
-            <p className="text-sm">
-              By signing-up you agree to the You Shop Website Conditions of Use
-              & Sale.
-            </p>
+           
             <p className="m-6 text-sm">
               <span>Have an account? </span>
               <Link to="/accounts/login" className="hover:text-red-600 ">
