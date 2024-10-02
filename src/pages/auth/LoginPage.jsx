@@ -81,10 +81,7 @@ const handleLogin = async(data) => {
             </div>
           </form>
           <div className="flex flex-col items-center justify-center">
-            <p className="text-sm">
-              By signing-in you agree to the You Shop Website Conditions of Use
-              & Sale.
-            </p>
+            
 
             <p className="m-6 text-sm">
               <span>Don't have an account? </span>
