@@ -39,9 +39,7 @@ const Footer = () => {
           <Link to="https://www.facebook.com/share/2KmRjzrTQ3PyiREb" passHref>
             <CiFacebook />
           </Link>
-          <Link to="https://wa.me/233247859178" passHref>
-            <FaWhatsapp className="mr-2 " />
-          </Link>
+          
         </div>
       </div>
       <div>
