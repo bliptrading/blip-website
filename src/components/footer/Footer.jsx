@@ -43,7 +43,6 @@ const Footer = () => {
             Blip Trading
           </Link>
         </ul>
-        
       </div>
       <div>
         <h1 className=" text-lg  font-medium roboto-thin ">Company</h1>
