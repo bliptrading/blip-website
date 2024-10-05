@@ -34,15 +34,16 @@ const Footer = () => {
           <li className="flex items-center ">
             <FaWhatsapp className="mr-2 " /> 024 785 9178
           </li>
+          <Link
+            to="https://www.facebook.com/share/2KmRjzrTQ3PyiREb"
+            passHre
+            className="flex items-center "
+          >
+            <CiFacebook className="mr-2" />
+            Blip Trading
+          </Link>
         </ul>
-        <div className="flex py-5 space-x-5 text-xl cursor-pointer">
-          <Link to="https://www.facebook.com/share/2KmRjzrTQ3PyiREb" passHref>
-            <CiFacebook />
-          </Link>
-          <Link to="https://wa.me/233247859178" passHref>
-            <FaWhatsapp className="mr-2 " />
-          </Link>
-        </div>
+        
       </div>
       <div>
         <h1 className=" text-lg  font-medium roboto-thin ">Company</h1>

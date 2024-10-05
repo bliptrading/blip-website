@@ -29,6 +29,7 @@ import {
   FaCar,
   FaBook,
   FaDigitalTachograph,
+  FaHeadphones
 } from "react-icons/fa";
 
 
@@ -125,6 +126,12 @@ const linkItems = [
     to: "/category/digital-goods",
     label: "Digital Goods",
     icon: <FaDigitalTachograph />,
+  },
+  {
+    id: 12,
+    to: "/category/accessories",
+    label: "Accessories",
+    icon: <FaHeadphones />,
   },
 ];
   return (

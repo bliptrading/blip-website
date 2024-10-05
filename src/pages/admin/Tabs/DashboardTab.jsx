@@ -26,6 +26,7 @@ const categoryItems = [
   { label: "Automotive", slug: "automotive" },
   { label: "Books & Stationery", slug: "books-stationery" },
   { label: "Digital Goods", slug: "digital-goods" },
+  { label: "Accessories", slug: "accessories" },
 ];
 
 
