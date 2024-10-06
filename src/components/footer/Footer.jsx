@@ -32,7 +32,7 @@ const Footer = () => {
             <FiPhoneCall className="mr-2 " /> 024 785 9178
           </li>
           <li className="flex items-center ">
-            <FaWhatsapp className="mr-2 " /> 024 785 9178
+            <FaWhatsapp className="mr-2 " /> (233) 247 859 178
           </li>
           <Link
             to="https://www.facebook.com/share/2KmRjzrTQ3PyiREb"

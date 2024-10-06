@@ -137,7 +137,7 @@ const linkItems = [
   return (
     <>
       <nav className="">
-        <div className="items-center h-20 hidden px-8 py-4 text-white bg-black lg:flex">
+        <div className="items-center h-20 hidden px-8 py-4 text-white bg-black lg:flex fixed top-0 left-0 w-full z-50">
           <Link to="/" className="flex items-center">
             <div className="lg:w-14 rounded-full">
               <img className="" alt="blip logo" src={logo} />
@@ -153,6 +153,7 @@ const linkItems = [
               <div tabIndex={0} role="button" className="bg-red-500 p-3 m-1">
                 <FaListUl color={"white"} />
               </div>
+
               <ul
                 tabIndex={0}
                 className="dropdown-content bg-base-100 text-black menu rounded-sm z-[1] w-52 p-2 shadow"
@@ -229,7 +230,7 @@ const linkItems = [
         </div>
 
         {/* mobile */}
-        <div className="flex items-center justify-between p-4 bg-black lg:hidden">
+        <div className="flex fixed top-0 w-screen left-0 items-center justify-between p-4 bg-black lg:hidden">
           <div
             className="block text-3xl text-white lg:hidden"
             onClick={() => setNav(!nav)}
@@ -245,11 +246,17 @@ const linkItems = [
           <ul
             onClick={() => setNav(!nav)}
             className={`absolute details top-[70px] transition-all duration-150  z-20 bg-black items-center  left-0 py-5 h-0 ${
-              nav ? "h-72 max-h-72 overflow-y-auto w-9/12" : "h-0 w-0"
+              nav ? "h-96 max-h-96 overflow-y-auto w-9/12" : "h-0 w-0"
             }`}
           >
             {nav && (
               <div className="flex flex-col mx-2 text-lg h-96">
+                <div
+                  className="block text-3xl text-white lg:hidden"
+                  onClick={() => setNav(!nav)}
+                >
+                  <IoClose />
+                </div>
                 {loc.pathname.split("/")[1] !== "admin" ? (
                   <>
                     <li className="flex my-2 items-center font-thin  w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
@@ -347,17 +354,17 @@ const linkItems = [
                     <IoBasketOutline className="mr-1" /> Latest Products
                   </Link>
                 </li>
-                {linkItems.map((each)=> (
-                  <li key={each.name} className="flex items-center font-thin w-auto p-2 text-white bg-black  rounded-sm cursor-pointer">
+                {linkItems.map((each) => (
+                  <li
+                    key={each.name}
+                    className="flex items-center font-thin w-auto p-2 text-white bg-black  rounded-sm cursor-pointer"
+                  >
                     <Link to={each.to} className="flex items-center">
                       {each.icon}
-                      <span className="mx-1">
-                      {each.label}
-                      </span>
+                      <span className="mx-1">{each.label}</span>
                     </Link>
                   </li>
                 ))}
-                
               </div>
             )}
           </ul>
