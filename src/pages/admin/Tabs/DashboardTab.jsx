@@ -27,6 +27,8 @@ const categoryItems = [
   { label: "Books & Stationery", slug: "books-stationery" },
   { label: "Digital Goods", slug: "digital-goods" },
   { label: "Accessories", slug: "accessories" },
+  { label: "Computers", slug: "computers" },
+  { label: "Mobile Phones", slug: "mobile-phones" },
 ];
 
 

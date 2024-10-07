@@ -17,7 +17,9 @@ import { BsBasket2 } from "react-icons/bs";
 import logo from '../../assets/logo.jpeg'
 import { signOut, getAuth } from "firebase/auth";
 import { app } from "../../utils/firebase";
+import { SlScreenSmartphone } from "react-icons/sl";
 import { BsHandbag } from "react-icons/bs";
+import { MdOutlineComputer } from "react-icons/md";
 import {
   FaTshirt,
   FaMobileAlt,
@@ -81,45 +83,26 @@ const Header = () => {
   };
 
 const linkItems = [
+  {
+    id: 12,
+    to: "/category/accessories",
+    label: "Accessories",
+    icon: <FaHeadphones />,
+  },
   { id: 1, to: "/", label: "All", icon: <FaShoppingCart /> },
-  { id: 2, to: "/category/fashion", label: "Fashion", icon: <FaTshirt /> },
-  {
-    id: 3,
-    to: "/category/electronics",
-    label: "Electronics",
-    icon: <FaMobileAlt />,
-  },
-  {
-    id: 4,
-    to: "/category/home-living",
-    label: "Home & Living",
-    icon: <FaHome />,
-  },
-  {
-    id: 5,
-    to: "/category/health-beauty",
-    label: "Health & Beauty",
-    icon: <FaHeartbeat />,
-  },
-  {
-    id: 6,
-    to: "/category/groceries",
-    label: "Groceries",
-    icon: <FaShoppingCart />,
-  },
-  { id: 7, to: "/category/baby-kids", label: "Baby & Kids", icon: <FaBaby /> },
-  {
-    id: 8,
-    to: "/category/sports-outdoors",
-    label: "Sports & Outdoors",
-    icon: <FaFutbol />,
-  },
   { id: 9, to: "/category/automotive", label: "Automotive", icon: <FaCar /> },
+  { id: 7, to: "/category/baby-kids", label: "Baby & Kids", icon: <FaBaby /> },
   {
     id: 10,
     to: "/category/books-stationery",
     label: "Books & Stationery",
     icon: <FaBook />,
+  },
+  {
+    id: 12,
+    to: "/category/computers",
+    label: "Computers",
+    icon: <MdOutlineComputer />,
   },
   {
     id: 11,
@@ -128,12 +111,44 @@ const linkItems = [
     icon: <FaDigitalTachograph />,
   },
   {
+    id: 3,
+    to: "/category/electronics",
+    label: "Electronics",
+    icon: <FaMobileAlt />,
+  },
+  { id: 2, to: "/category/fashion", label: "Fashion", icon: <FaTshirt /> },
+  {
+    id: 6,
+    to: "/category/groceries",
+    label: "Groceries",
+    icon: <FaShoppingCart />,
+  },
+  {
+    id: 5,
+    to: "/category/health-beauty",
+    label: "Health & Beauty",
+    icon: <FaHeartbeat />,
+  },
+  {
+    id: 4,
+    to: "/category/home-living",
+    label: "Home & Living",
+    icon: <FaHome />,
+  },
+  {
     id: 12,
-    to: "/category/accessories",
-    label: "Accessories",
-    icon: <FaHeadphones />,
+    to: "/category/mobile-phones",
+    label: "Mobile Phones",
+    icon: <SlScreenSmartphone />,
+  },
+  {
+    id: 8,
+    to: "/category/sports-outdoors",
+    label: "Sports & Outdoors",
+    icon: <FaFutbol />,
   },
 ];
+;
   return (
     <>
       <nav className="">
