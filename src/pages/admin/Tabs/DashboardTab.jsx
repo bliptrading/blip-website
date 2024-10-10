@@ -29,6 +29,8 @@ const categoryItems = [
   { label: "Accessories", slug: "accessories" },
   { label: "Computers", slug: "computers" },
   { label: "Mobile Phones", slug: "mobile-phones" },
+  { label: "Networking Devices", slug: "networking-devices" },
+  { label: "Power Banks", slug: "power-banks" },
 ];
 
 

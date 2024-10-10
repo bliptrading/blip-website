@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
-import { HiOutlineDesktopComputer } from "react-icons/hi";
 import { IoBasketOutline } from "react-icons/io5";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
@@ -10,16 +9,14 @@ import { FaListUl } from "react-icons/fa";
 import { IoMenuOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuPackage2 } from "react-icons/lu";
-import { GiClothes } from "react-icons/gi";
-import { PiBuildingApartmentLight } from "react-icons/pi";
 import { GoHomeFill } from "react-icons/go";
-import { BsBasket2 } from "react-icons/bs";
+import { BsBasket2, BsRouter, BsHandbag } from "react-icons/bs";
 import logo from '../../assets/logo.jpeg'
 import { signOut, getAuth } from "firebase/auth";
 import { app } from "../../utils/firebase";
 import { SlScreenSmartphone } from "react-icons/sl";
-import { BsHandbag } from "react-icons/bs";
 import { MdOutlineComputer } from "react-icons/md";
+import { RiBattery2ChargeLine } from "react-icons/ri";
 import {
   FaTshirt,
   FaMobileAlt,
@@ -147,6 +144,9 @@ const linkItems = [
     label: "Sports & Outdoors",
     icon: <FaFutbol />,
   },
+  { id: 13, to: "/category/networking-devices", label:"Networking Devices" , icon:<BsRouter />},
+  {id:14, to:"/category/power-banks", label:'Power Banks', icon: <RiBattery2ChargeLine />}
+
 ];
 ;
   return (
@@ -171,7 +171,7 @@ const linkItems = [
 
               <ul
                 tabIndex={0}
-                className="dropdown-content bg-base-100 text-black menu rounded-sm z-[1] w-52 p-2 shadow"
+                className="dropdown-content bg-base-100 text-black menu overflow-y-auto rounded-sm z-[1] w-52 p-2 shadow max-h-60"
               >
                 {linkItems.map(({ id, to, label }) => (
                   <Link key={id} className="mx-4 my-2" to={to}>
